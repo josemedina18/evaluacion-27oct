@@ -1,0 +1,1446 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Evaluacion Demo</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/TA27octubreta_jm__ta_ampliados_1.js"></script>
+        <script src="data/Tiendas_Mass_2.js"></script>
+        <script src="data/Locales_Oct27_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ff0138',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ff0138',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_OSMHumanitarianDataModel_0');
+        map.getPane('pane_OSMHumanitarianDataModel_0').style.zIndex = 400;
+        var layer_OSMHumanitarianDataModel_0 = L.tileLayer('http://a.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMHumanitarianDataModel_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_OSMHumanitarianDataModel_0;
+        map.addLayer(layer_OSMHumanitarianDataModel_0);
+        function pop_TA27octubreta_jm__ta_ampliados_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['qc_id'] !== null ? autolinker.link(feature.properties['qc_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">FID</th>\
+                        <td>' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pob</th>\
+                        <td>' + (feature.properties['pob'] !== null ? autolinker.link(feature.properties['pob'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GF</th>\
+                        <td>' + (feature.properties['gf'] !== null ? autolinker.link(feature.properties['gf'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">area3</th>\
+                        <td>' + (feature.properties['area3'] !== null ? autolinker.link(feature.properties['area3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">area4</th>\
+                        <td>' + (feature.properties['area4'] !== null ? autolinker.link(feature.properties['area4'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_TA27octubreta_jm__ta_ampliados_1_0() {
+            return {
+                pane: 'pane_TA27octubreta_jm__ta_ampliados_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 3.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(236,244,6,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_TA27octubreta_jm__ta_ampliados_1');
+        map.getPane('pane_TA27octubreta_jm__ta_ampliados_1').style.zIndex = 401;
+        map.getPane('pane_TA27octubreta_jm__ta_ampliados_1').style['mix-blend-mode'] = 'normal';
+        var layer_TA27octubreta_jm__ta_ampliados_1 = new L.geoJson(json_TA27octubreta_jm__ta_ampliados_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_TA27octubreta_jm__ta_ampliados_1',
+            layerName: 'layer_TA27octubreta_jm__ta_ampliados_1',
+            pane: 'pane_TA27octubreta_jm__ta_ampliados_1',
+            onEachFeature: pop_TA27octubreta_jm__ta_ampliados_1,
+            style: style_TA27octubreta_jm__ta_ampliados_1_0,
+        });
+        bounds_group.addLayer(layer_TA27octubreta_jm__ta_ampliados_1);
+        map.addLayer(layer_TA27octubreta_jm__ta_ampliados_1);
+        function pop_Tiendas_Mass_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">qc_id</th>\
+                        <td>' + (feature.properties['qc_id'] !== null ? autolinker.link(feature.properties['qc_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">codigo_loc</th>\
+                        <td>' + (feature.properties['codigo_loc'] !== null ? autolinker.link(feature.properties['codigo_loc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sv</th>\
+                        <td>' + (feature.properties['sv'] !== null ? autolinker.link(feature.properties['sv'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">latitud</th>\
+                        <td>' + (feature.properties['latitud'] !== null ? autolinker.link(feature.properties['latitud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">longitud</th>\
+                        <td>' + (feature.properties['longitud'] !== null ? autolinker.link(feature.properties['longitud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">antiguedad</th>\
+                        <td>' + (feature.properties['antiguedad'] !== null ? autolinker.link(feature.properties['antiguedad'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vta_anual</th>\
+                        <td>' + (feature.properties['vta_anual'] !== null ? autolinker.link(feature.properties['vta_anual'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vta_1</th>\
+                        <td>' + (feature.properties['vta_1'] !== null ? autolinker.link(feature.properties['vta_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vta_2</th>\
+                        <td>' + (feature.properties['vta_2'] !== null ? autolinker.link(feature.properties['vta_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vta_3</th>\
+                        <td>' + (feature.properties['vta_3'] !== null ? autolinker.link(feature.properties['vta_3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Tiendas_Mass_2_0() {
+            return {
+                pane: 'pane_Tiendas_Mass_2',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Tiendas_Mass_2');
+        map.getPane('pane_Tiendas_Mass_2').style.zIndex = 402;
+        map.getPane('pane_Tiendas_Mass_2').style['mix-blend-mode'] = 'normal';
+        var layer_Tiendas_Mass_2 = new L.geoJson(json_Tiendas_Mass_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Tiendas_Mass_2',
+            layerName: 'layer_Tiendas_Mass_2',
+            pane: 'pane_Tiendas_Mass_2',
+            onEachFeature: pop_Tiendas_Mass_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Tiendas_Mass_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Tiendas_Mass_2);
+        map.addLayer(layer_Tiendas_Mass_2);
+        function pop_Locales_Oct27_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ID</th>\
+                        <td>' + (feature.properties['qc_id'] !== null ? autolinker.link(feature.properties['qc_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">fecha</th>\
+                        <td>' + (feature.properties['fecha'] !== null ? autolinker.link(feature.properties['fecha'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">n</th>\
+                        <td>' + (feature.properties['n'] !== null ? autolinker.link(feature.properties['n'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">correlativo</th>\
+                        <td>' + (feature.properties['correlativo'] !== null ? autolinker.link(feature.properties['correlativo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Latitud</th>\
+                        <td>' + (feature.properties['latitud'] !== null ? autolinker.link(feature.properties['latitud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Longitud</th>\
+                        <td>' + (feature.properties['longitud'] !== null ? autolinker.link(feature.properties['longitud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">distrito</th>\
+                        <td>' + (feature.properties['distrito'] !== null ? autolinker.link(feature.properties['distrito'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">at</th>\
+                        <td>' + (feature.properties['at'] !== null ? autolinker.link(feature.properties['at'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">sv</th>\
+                        <td>' + (feature.properties['sv'] !== null ? autolinker.link(feature.properties['sv'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">skus</th>\
+                        <td>' + (feature.properties['skus'] !== null ? autolinker.link(feature.properties['skus'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">fyv</th>\
+                        <td>' + (feature.properties['fyv'] !== null ? autolinker.link(feature.properties['fyv'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">vta_objetivo</th>\
+                        <td>' + (feature.properties['vta_objetivo'] !== null ? autolinker.link(feature.properties['vta_objetivo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Locales_Oct27_3_0() {
+            return {
+                pane: 'pane_Locales_Oct27_3',
+                radius: 12.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(220,252,15,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Locales_Oct27_3');
+        map.getPane('pane_Locales_Oct27_3').style.zIndex = 403;
+        map.getPane('pane_Locales_Oct27_3').style['mix-blend-mode'] = 'normal';
+        var layer_Locales_Oct27_3 = new L.geoJson(json_Locales_Oct27_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Locales_Oct27_3',
+            layerName: 'layer_Locales_Oct27_3',
+            pane: 'pane_Locales_Oct27_3',
+            onEachFeature: pop_Locales_Oct27_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Locales_Oct27_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Locales_Oct27_3);
+        map.addLayer(layer_Locales_Oct27_3);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Evaluacion Demo</h2>';
+            };
+            title.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Locales_Oct27_3.png" /> Locales_Oct27': layer_Locales_Oct27_3,'<img src="legend/Tiendas_Mass_2.png" /> Tiendas_Mass': layer_Tiendas_Mass_2,'<img src="legend/TA27octubreta_jm__ta_ampliados_1.png" /> TA-27octubre — ta_jm__ta_ampliados': layer_TA27octubreta_jm__ta_ampliados_1,"OSM Humanitarian Data Model": layer_OSMHumanitarianDataModel_0,}).addTo(map);
+        setBounds();
+        var i = 0;
+        layer_Tiendas_Mass_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((exp_label_Tiendas_Mass_2_eval_expression(context) !== null?String('<div style="color: #323232; font-size: 9pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + exp_label_Tiendas_Mass_2_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Tiendas_Mass_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Locales_Oct27_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['q2wHide_local'] !== null?String('<div style="color: #000000; font-size: 7pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['q2wHide_local']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Locales_Oct27_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        map.addControl(new L.Control.Search({
+            layer: layer_Locales_Oct27_3,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'local'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"local": "str","tienda": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+        var i = 0;
+        layer_Tiendas_Mass_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((exp_label_Tiendas_Mass_2_eval_expression(context) !== null?String('<div style="color: #323232; font-size: 9pt; font-family: \'MS Shell Dlg 2\', sans-serif;">' + exp_label_Tiendas_Mass_2_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Tiendas_Mass_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        var i = 0;
+        layer_Locales_Oct27_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['q2wHide_local'] !== null?String('<div style="color: #000000; font-size: 7pt; font-weight: bold; font-family: \'MS Shell Dlg 2\', sans-serif;">' + layer.feature.properties['q2wHide_local']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_Locales_Oct27_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_local = document.createElement('div');
+            div_local.id = "div_local";
+            div_local.className= "filterselect";
+            document.getElementById("menu").appendChild(div_local);
+            sel_local = document.createElement('select');
+            sel_local.multiple = true;
+            sel_local.size = 10;
+            sel_local.id = "sel_local";
+            var local_options_str = "<option value='' unselected></option>";
+            sel_local.onchange = function(){filterFunc()};
+            local_options_str  += '<option value="Alamos17SJL MS">Alamos17SJL MS</option>';
+            local_options_str  += '<option value="Alianza5 TRU MS">Alianza5 TRU MS</option>';
+            local_options_str  += '<option value="Alto1PIU MS">Alto1PIU MS</option>';
+            local_options_str  += '<option value="Arica305 AQP MS">Arica305 AQP MS</option>';
+            local_options_str  += '<option value="Buenos1 PIU">Buenos1 PIU</option>';
+            local_options_str  += '<option value="Buenos1PIU MS">Buenos1PIU MS</option>';
+            local_options_str  += '<option value="Busta11 AQP MS">Busta11 AQP MS</option>';
+            local_options_str  += '<option value="Caceres1 CO MS">Caceres1 CO MS</option>';
+            local_options_str  += '<option value="Caminos14 SC MS">Caminos14 SC MS</option>';
+            local_options_str  += '<option value="Caminos32 SC MS (ex Caminos14 SC MS)">Caminos32 SC MS (ex Caminos14 SC MS)</option>';
+            local_options_str  += '<option value="CaracaF2 AQP">CaracaF2 AQP</option>';
+            local_options_str  += '<option value="CaracaF2 AQP MS">CaracaF2 AQP MS</option>';
+            local_options_str  += '<option value="Chasqui1 SMP">Chasqui1 SMP</option>';
+            local_options_str  += '<option value="Chasqui1 SMP MS">Chasqui1 SMP MS</option>';
+            local_options_str  += '<option value="Chocope">Chocope</option>';
+            local_options_str  += '<option value="Circun2 PIU">Circun2 PIU</option>';
+            local_options_str  += '<option value="Circun2PIU MS">Circun2PIU MS</option>';
+            local_options_str  += '<option value="CircunA1">CircunA1</option>';
+            local_options_str  += '<option value="CongatB2 AQP">CongatB2 AQP</option>';
+            local_options_str  += '<option value="CongatB2 AQP MS">CongatB2 AQP MS</option>';
+            local_options_str  += '<option value="Curamori1PIU MS">Curamori1PIU MS</option>';
+            local_options_str  += '<option value="Ejercit2 AQP MS">Ejercit2 AQP MS</option>';
+            local_options_str  += '<option value="Eucalip21 VE MS">Eucalip21 VE MS</option>';
+            local_options_str  += '<option value="Eucalip21 VE MS(Ex Eucaliptos21 VE MS)">Eucalip21 VE MS(Ex Eucaliptos21 VE MS)</option>';
+            local_options_str  += '<option value="Garcia1">Garcia1</option>';
+            local_options_str  += '<option value="Guadalu1 TRU MS">Guadalu1 TRU MS</option>';
+            local_options_str  += '<option value="Junin1 PIU MS">Junin1 PIU MS</option>';
+            local_options_str  += '<option value="Lamba10 PIU MS">Lamba10 PIU MS</option>';
+            local_options_str  += '<option value="LimaQ23 NI MS">LimaQ23 NI MS</option>';
+            local_options_str  += '<option value="Lirios4 PP">Lirios4 PP</option>';
+            local_options_str  += '<option value="Lirios4 PP MS">Lirios4 PP MS</option>';
+            local_options_str  += '<option value="Lozada AQP">Lozada AQP</option>';
+            local_options_str  += '<option value="Lozada AQP MS">Lozada AQP MS</option>';
+            local_options_str  += '<option value="Malecon1 PU">Malecon1 PU</option>';
+            local_options_str  += '<option value="Malecon1 PU MS">Malecon1 PU MS</option>';
+            local_options_str  += '<option value="Malecon3PIU MS">Malecon3PIU MS</option>';
+            local_options_str  += '<option value="Marce9PIU MS">Marce9PIU MS</option>';
+            local_options_str  += '<option value="Mariate20 SMP">Mariate20 SMP</option>';
+            local_options_str  += '<option value="Mariate20 SMP MS">Mariate20 SMP MS</option>';
+            local_options_str  += '<option value="Martin4 TRU MS">Martin4 TRU MS</option>';
+            local_options_str  += '<option value="Mendiza2 CB">Mendiza2 CB</option>';
+            local_options_str  += '<option value="Mendiza2 CB MS">Mendiza2 CB MS</option>';
+            local_options_str  += '<option value="Paname9 TRU MS">Paname9 TRU MS</option>';
+            local_options_str  += '<option value="Pedro8 TRU MS">Pedro8 TRU MS</option>';
+            local_options_str  += '<option value="Pesqueda3TRU MS">Pesqueda3TRU MS</option>';
+            local_options_str  += '<option value="PradoW CHI MS (antes 28julio GP)">PradoW CHI MS (antes 28julio GP)</option>';
+            local_options_str  += '<option value="Real11 AU">Real11 AU</option>';
+            local_options_str  += '<option value="Real11 AU MS">Real11 AU MS</option>';
+            local_options_str  += '<option value="Sauces3 AT MS">Sauces3 AT MS</option>';
+            local_options_str  += '<option value="Tupac1PIU MS">Tupac1PIU MS</option>';
+            local_options_str  += '<option value="ValleB10 AQP">ValleB10 AQP</option>';
+            local_options_str  += '<option value="ValleB10 AQP MS">ValleB10 AQP MS</option>';
+            local_options_str  += '<option value="VillaF2 AQP">VillaF2 AQP</option>';
+            local_options_str  += '<option value="VillaF2 AQP MS">VillaF2 AQP MS</option>';
+            local_options_str  += '<option value="Vivanco8 PL MS">Vivanco8 PL MS</option>';
+            local_options_str  += '<option value="Zanjon1PIU MS">Zanjon1PIU MS</option>';
+            sel_local.innerHTML = local_options_str;
+            div_local.appendChild(sel_local);
+            var lab_local = document.createElement('div');
+            lab_local.innerHTML = 'local';
+            lab_local.className = 'filterlabel';
+            div_local.appendChild(lab_local);
+            var reset_local = document.createElement('div');
+            reset_local.innerHTML = 'clear filter';
+            reset_local.className = 'filterlabel';
+            reset_local.onclick = function() {
+                var options = document.getElementById("sel_local").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_local.appendChild(reset_local);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_tienda = document.createElement('div');
+            div_tienda.id = "div_tienda";
+            div_tienda.className= "filterselect";
+            document.getElementById("menu").appendChild(div_tienda);
+            sel_tienda = document.createElement('select');
+            sel_tienda.multiple = true;
+            sel_tienda.size = 10;
+            sel_tienda.id = "sel_tienda";
+            var tienda_options_str = "<option value='' unselected></option>";
+            sel_tienda.onchange = function(){filterFunc()};
+            tienda_options_str  += '<option value="12Octubre SMP MS">12Octubre SMP MS</option>';
+            tienda_options_str  += '<option value="12octuD2 SMP MS">12octuD2 SMP MS</option>';
+            tienda_options_str  += '<option value="13Agosto VES MS">13Agosto VES MS</option>';
+            tienda_options_str  += '<option value="13Enero SJL MS">13Enero SJL MS</option>';
+            tienda_options_str  += '<option value="17 Nov 4 IN MS">17 Nov 4 IN MS</option>';
+            tienda_options_str  += '<option value="1roMayo VES MS">1roMayo VES MS</option>';
+            tienda_options_str  += '<option value="22FEB7 TRU MS">22FEB7 TRU MS</option>';
+            tienda_options_str  += '<option value="24Junio VES MS">24Junio VES MS</option>';
+            tienda_options_str  += '<option value="26 Marzo 15 TRU MS">26 Marzo 15 TRU MS</option>';
+            tienda_options_str  += '<option value="26Nov 19 VMT MS">26Nov 19 VMT MS</option>';
+            tienda_options_str  += '<option value="26Nov 94 VMT MS">26Nov 94 VMT MS</option>';
+            tienda_options_str  += '<option value="27Diciem VMT MS">27Diciem VMT MS</option>';
+            tienda_options_str  += '<option value="28 Jul5 IMP MS">28 Jul5 IMP MS</option>';
+            tienda_options_str  += '<option value="28Julio7 MI MS">28Julio7 MI MS</option>';
+            tienda_options_str  += '<option value="29 Dic 4 TRU MS">29 Dic 4 TRU MS</option>';
+            tienda_options_str  += '<option value="2Octubre 10 LO MS">2Octubre 10 LO MS</option>';
+            tienda_options_str  += '<option value="ACanta SMP MS">ACanta SMP MS</option>';
+            tienda_options_str  += '<option value="AMERICA23 TRU MS">AMERICA23 TRU MS</option>';
+            tienda_options_str  += '<option value="AUgarte MI MS">AUgarte MI MS</option>';
+            tienda_options_str  += '<option value="Abancay4 PI MS ">Abancay4 PI MS </option>';
+            tienda_options_str  += '<option value="Abtao 4 AN MS">Abtao 4 AN MS</option>';
+            tienda_options_str  += '<option value="Acaceres 2 SU MS">Acaceres 2 SU MS</option>';
+            tienda_options_str  += '<option value="Aguero 14 EA MS">Aguero 14 EA MS</option>';
+            tienda_options_str  += '<option value="AgueroN 24 SM MS">AgueroN 24 SM MS</option>';
+            tienda_options_str  += '<option value="Agustin 11 SU MS">Agustin 11 SU MS</option>';
+            tienda_options_str  += '<option value="Alameda 12 LM MS">Alameda 12 LM MS</option>';
+            tienda_options_str  += '<option value="Alameda 16 PIU MS">Alameda 16 PIU MS</option>';
+            tienda_options_str  += '<option value="Alameda 17 LM MS">Alameda 17 LM MS</option>';
+            tienda_options_str  += '<option value="Alameda 31 LM MS">Alameda 31 LM MS</option>';
+            tienda_options_str  += '<option value="Alameda U25 CO MS">Alameda U25 CO MS</option>';
+            tienda_options_str  += '<option value="AlamedaH3CLL MS">AlamedaH3CLL MS</option>';
+            tienda_options_str  += '<option value="Alamo 1 CA MS">Alamo 1 CA MS</option>';
+            tienda_options_str  += '<option value="Alamos HUAU MS">Alamos HUAU MS</option>';
+            tienda_options_str  += '<option value="Alamos1M VES MS">Alamos1M VES MS</option>';
+            tienda_options_str  += '<option value="AlbertoG 1 LO MS">AlbertoG 1 LO MS</option>';
+            tienda_options_str  += '<option value="Alborada 14 CE MS">Alborada 14 CE MS</option>';
+            tienda_options_str  += '<option value="Alborada2AQP MS">Alborada2AQP MS</option>';
+            tienda_options_str  += '<option value="Alcides4 TRU MS ">Alcides4 TRU MS </option>';
+            tienda_options_str  += '<option value="AlegreP14 NA MS">AlegreP14 NA MS</option>';
+            tienda_options_str  += '<option value="Aleliet 12 SJM MS">Aleliet 12 SJM MS</option>';
+            tienda_options_str  += '<option value="Alfonso 1 AQP MS">Alfonso 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Algarrob 1 PP MS">Algarrob 1 PP MS</option>';
+            tienda_options_str  += '<option value="Alipio SJM MS">Alipio SJM MS</option>';
+            tienda_options_str  += '<option value="Alisos 10 SMP MS">Alisos 10 SMP MS</option>';
+            tienda_options_str  += '<option value="Alisos 4 SMP MS">Alisos 4 SMP MS</option>';
+            tienda_options_str  += '<option value="Alisos 6 LO MS">Alisos 6 LO MS</option>';
+            tienda_options_str  += '<option value="Alisos 7 LO MS">Alisos 7 LO MS</option>';
+            tienda_options_str  += '<option value="AlisosL 8 SMP MS">AlisosL 8 SMP MS</option>';
+            tienda_options_str  += '<option value="Allende 1 VMT MS">Allende 1 VMT MS</option>';
+            tienda_options_str  += '<option value="Almendra 2 SMP MS">Almendra 2 SMP MS</option>';
+            tienda_options_str  += '<option value="Alva 5 CO MS">Alva 5 CO MS</option>';
+            tienda_options_str  += '<option value="Amancaes 1 RI MS">Amancaes 1 RI MS</option>';
+            tienda_options_str  += '<option value="Amaru 3 SA MS">Amaru 3 SA MS</option>';
+            tienda_options_str  += '<option value="Amaru 73 CO MS">Amaru 73 CO MS</option>';
+            tienda_options_str  += '<option value="America 13 LV MS">America 13 LV MS</option>';
+            tienda_options_str  += '<option value="America 6 LV MS">America 6 LV MS</option>';
+            tienda_options_str  += '<option value="America 9 PI MS">America 9 PI MS</option>';
+            tienda_options_str  += '<option value="America9 TRU MS">America9 TRU MS</option>';
+            tienda_options_str  += '<option value="Ancash LT3 EA MS">Ancash LT3 EA MS</option>';
+            tienda_options_str  += '<option value="Andes 5 AQP MS">Andes 5 AQP MS</option>';
+            tienda_options_str  += '<option value="Andromed 1 CLL MS">Andromed 1 CLL MS</option>';
+            tienda_options_str  += '<option value="Angamos 25 SU MS">Angamos 25 SU MS</option>';
+            tienda_options_str  += '<option value="Angeles 3 TRU MS">Angeles 3 TRU MS</option>';
+            tienda_options_str  += '<option value="Angos F7 IC MS">Angos F7 IC MS</option>';
+            tienda_options_str  += '<option value="Antares 5 RI MS">Antares 5 RI MS</option>';
+            tienda_options_str  += '<option value="Antares J1 SC MS">Antares J1 SC MS</option>';
+            tienda_options_str  += '<option value="Antigua1 LU MS">Antigua1 LU MS</option>';
+            tienda_options_str  += '<option value="Antonio3 VMT MS ">Antonio3 VMT MS </option>';
+            tienda_options_str  += '<option value="Apariu9 HUA MS">Apariu9 HUA MS</option>';
+            tienda_options_str  += '<option value="Aravicus 2 IN MS">Aravicus 2 IN MS</option>';
+            tienda_options_str  += '<option value="Arenales 1 IC MS">Arenales 1 IC MS</option>';
+            tienda_options_str  += '<option value="Arequi 6 AQP MS">Arequi 6 AQP MS</option>';
+            tienda_options_str  += '<option value="Arequi2 AQP MS ">Arequi2 AQP MS </option>';
+            tienda_options_str  += '<option value="Argenti 9 AQP MS">Argenti 9 AQP MS</option>';
+            tienda_options_str  += '<option value="Aristides 13 CE MS">Aristides 13 CE MS</option>';
+            tienda_options_str  += '<option value="Arquite 1 AN MS">Arquite 1 AN MS</option>';
+            tienda_options_str  += '<option value="AsoSRosa STR MS">AsoSRosa STR MS</option>';
+            tienda_options_str  += '<option value="Atahualpa1CY MS">Atahualpa1CY MS</option>';
+            tienda_options_str  += '<option value="Ate 200 AT MS">Ate 200 AT MS</option>';
+            tienda_options_str  += '<option value="Ateca VMT MS">Ateca VMT MS</option>';
+            tienda_options_str  += '<option value="Aviacion 30 SB MS">Aviacion 30 SB MS</option>';
+            tienda_options_str  += '<option value="Aviacion 32 SB MS">Aviacion 32 SB MS</option>';
+            tienda_options_str  += '<option value="Aviacion 42 SU MS">Aviacion 42 SU MS</option>';
+            tienda_options_str  += '<option value="Aviacion 45 SC MS">Aviacion 45 SC MS</option>';
+            tienda_options_str  += '<option value="Aviacion37 SU MS">Aviacion37 SU MS</option>';
+            tienda_options_str  += '<option value="Ayacucho 3 SM MS">Ayacucho 3 SM MS</option>';
+            tienda_options_str  += '<option value="Ayacucho A3 LP MS">Ayacucho A3 LP MS</option>';
+            tienda_options_str  += '<option value="Ayllon 416 CY MS">Ayllon 416 CY MS</option>';
+            tienda_options_str  += '<option value="Ayllon 9 CY MS">Ayllon 9 CY MS</option>';
+            tienda_options_str  += '<option value="Aymaras 3 AT MS">Aymaras 3 AT MS</option>';
+            tienda_options_str  += '<option value="AzucenasT 2 SA MS">AzucenasT 2 SA MS</option>';
+            tienda_options_str  += '<option value="Azule 11 CLL MS">Azule 11 CLL MS</option>';
+            tienda_options_str  += '<option value="BAires 4 PP MS">BAires 4 PP MS</option>';
+            tienda_options_str  += '<option value="BSuarez SJM MS">BSuarez SJM MS</option>';
+            tienda_options_str  += '<option value="BUTTER 2 BA MS">BUTTER 2 BA MS</option>';
+            tienda_options_str  += '<option value="Balaguer CHS MS">Balaguer CHS MS</option>';
+            tienda_options_str  += '<option value="Ballesta 2 CLL MS">Ballesta 2 CLL MS</option>';
+            tienda_options_str  += '<option value="Barreda 2 RI MS">Barreda 2 RI MS</option>';
+            tienda_options_str  += '<option value="Basadre W SJL MS">Basadre W SJL MS</option>';
+            tienda_options_str  += '<option value="BasadreF SJL MS">BasadreF SJL MS</option>';
+            tienda_options_str  += '<option value="Bauzate 11 LV MS">Bauzate 11 LV MS</option>';
+            tienda_options_str  += '<option value="Belaun 3 AQP MS">Belaun 3 AQP MS</option>';
+            tienda_options_str  += '<option value="Belaunde 11 CO MS">Belaunde 11 CO MS</option>';
+            tienda_options_str  += '<option value="Belaunde 5 CO MS">Belaunde 5 CO MS</option>';
+            tienda_options_str  += '<option value="Belaunde 8 CO MS">Belaunde 8 CO MS</option>';
+            tienda_options_str  += '<option value="Belisario 9 SJM MS">Belisario 9 SJM MS</option>';
+            tienda_options_str  += '<option value="Bellido 1 AQP MS">Bellido 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Bello D9 PIU MS">Bello D9 PIU MS</option>';
+            tienda_options_str  += '<option value="Benavi 38 SC MS">Benavi 38 SC MS</option>';
+            tienda_options_str  += '<option value="Benavides SC MS">Benavides SC MS</option>';
+            tienda_options_str  += '<option value="BenitoU16 CB MS">BenitoU16 CB MS</option>';
+            tienda_options_str  += '<option value="Benja 5 AT MS">Benja 5 AT MS</option>';
+            tienda_options_str  += '<option value="Berlin5 MI MS ">Berlin5 MI MS </option>';
+            tienda_options_str  += '<option value="Berlind 32 AT MS">Berlind 32 AT MS</option>';
+            tienda_options_str  += '<option value="Bernal 3 SJM MS">Bernal 3 SJM MS</option>';
+            tienda_options_str  += '<option value="BerteB 15 CA MS">BerteB 15 CA MS</option>';
+            tienda_options_str  += '<option value="Bethoveen 4 SB MS">Bethoveen 4 SB MS</option>';
+            tienda_options_str  += '<option value="BlancoA 16 SB MS">BlancoA 16 SB MS</option>';
+            tienda_options_str  += '<option value="Blondev 46 LO MS">Blondev 46 LO MS</option>';
+            tienda_options_str  += '<option value="Boca1 RI SM">Boca1 RI SM</option>';
+            tienda_options_str  += '<option value="Bolivar 16 PL MS">Bolivar 16 PL MS</option>';
+            tienda_options_str  += '<option value="Bolivar 3 PL MS">Bolivar 3 PL MS</option>';
+            tienda_options_str  += '<option value="Bolivar 5 SE MS">Bolivar 5 SE MS</option>';
+            tienda_options_str  += '<option value="Bolivar 6 IC MS">Bolivar 6 IC MS</option>';
+            tienda_options_str  += '<option value="Bolivar5 TRU MS">Bolivar5 TRU MS</option>';
+            tienda_options_str  += '<option value="Bolivia 7 BR MS">Bolivia 7 BR MS</option>';
+            tienda_options_str  += '<option value="Bolog11 AQP MS">Bolog11 AQP MS</option>';
+            tienda_options_str  += '<option value="Bologd3 AQP MS">Bologd3 AQP MS</option>';
+            tienda_options_str  += '<option value="Bologne 4 TRU MS">Bologne 4 TRU MS</option>';
+            tienda_options_str  += '<option value="Bologne BARR MS">Bologne BARR MS</option>';
+            tienda_options_str  += '<option value="Bologne1 MA MS">Bologne1 MA MS</option>';
+            tienda_options_str  += '<option value="Bolognesi 6 MA MS">Bolognesi 6 MA MS</option>';
+            tienda_options_str  += '<option value="Bolognesi 6 SA MS">Bolognesi 6 SA MS</option>';
+            tienda_options_str  += '<option value="Borgono 1 MI MS">Borgono 1 MI MS</option>';
+            tienda_options_str  += '<option value="Borja2 TRU MS">Borja2 TRU MS</option>';
+            tienda_options_str  += '<option value="Braille13 CE MS">Braille13 CE MS</option>';
+            tienda_options_str  += '<option value="Brasil 20 PL MS">Brasil 20 PL MS</option>';
+            tienda_options_str  += '<option value="Brasil 30 MA MS">Brasil 30 MA MS</option>';
+            tienda_options_str  += '<option value="Brigida 3 SM MS">Brigida 3 SM MS</option>';
+            tienda_options_str  += '<option value="Bueno 11 PP MS">Bueno 11 PP MS</option>';
+            tienda_options_str  += '<option value="Bueno 23 PP MS">Bueno 23 PP MS</option>';
+            tienda_options_str  += '<option value="Buenos 16 PP MS">Buenos 16 PP MS</option>';
+            tienda_options_str  += '<option value="Buenos3 TRU MS">Buenos3 TRU MS</option>';
+            tienda_options_str  += '<option value="Bustamant 7 SA MS">Bustamant 7 SA MS</option>';
+            tienda_options_str  += '<option value="CACERES1 AT MS">CACERES1 AT MS</option>';
+            tienda_options_str  += '<option value="CHuluca 2 PIU MS">CHuluca 2 PIU MS</option>';
+            tienda_options_str  += '<option value="CORI 3 IN MS">CORI 3 IN MS</option>';
+            tienda_options_str  += '<option value="Caceres 32 PP MS">Caceres 32 PP MS</option>';
+            tienda_options_str  += '<option value="Caceres SC MS">Caceres SC MS</option>';
+            tienda_options_str  += '<option value="Caceres4 CB MS">Caceres4 CB MS</option>';
+            tienda_options_str  += '<option value="Cahuas5 HUA MS">Cahuas5 HUA MS</option>';
+            tienda_options_str  += '<option value="Cahuid Q42 TRU MS">Cahuid Q42 TRU MS</option>';
+            tienda_options_str  += '<option value="Cahuide 9 LP MS">Cahuide 9 LP MS</option>';
+            tienda_options_str  += '<option value="Callao 5 LP MS">Callao 5 LP MS</option>';
+            tienda_options_str  += '<option value="Calle 29 H2 LO MS">Calle 29 H2 LO MS</option>';
+            tienda_options_str  += '<option value="Calle19 B1 PA MS">Calle19 B1 PA MS</option>';
+            tienda_options_str  += '<option value="Calle7 A1 CLL MS">Calle7 A1 CLL MS</option>';
+            tienda_options_str  += '<option value="Camino C5 CB MS">Camino C5 CB MS</option>';
+            tienda_options_str  += '<option value="Caminos 14 SC MS">Caminos 14 SC MS</option>';
+            tienda_options_str  += '<option value="Caminos 25 SC MS">Caminos 25 SC MS</option>';
+            tienda_options_str  += '<option value="Caminos 31 SC MS">Caminos 31 SC MS</option>';
+            tienda_options_str  += '<option value="Campodoni 4 LV MS">Campodoni 4 LV MS</option>';
+            tienda_options_str  += '<option value="Campoy 1 SJL MS">Campoy 1 SJL MS</option>';
+            tienda_options_str  += '<option value="CampoyC2 SJL MS">CampoyC2 SJL MS</option>';
+            tienda_options_str  += '<option value="Canada 1 CO MS">Canada 1 CO MS</option>';
+            tienda_options_str  += '<option value="Canada 3 LV MS">Canada 3 LV MS</option>';
+            tienda_options_str  += '<option value="Canada 35 SL MS">Canada 35 SL MS</option>';
+            tienda_options_str  += '<option value="Canevac31SJM MS">Canevac31SJM MS</option>';
+            tienda_options_str  += '<option value="Canevaro 4 SJM MS">Canevaro 4 SJM MS</option>';
+            tienda_options_str  += '<option value="Canevaro SJM MS">Canevaro SJM MS</option>';
+            tienda_options_str  += '<option value="Canta 1 CA MS">Canta 1 CA MS</option>';
+            tienda_options_str  += '<option value="Canta 31 SMP MS">Canta 31 SMP MS</option>';
+            tienda_options_str  += '<option value="Canta E36 SMP MS">Canta E36 SMP MS</option>';
+            tienda_options_str  += '<option value="Canto 35 SJL MS">Canto 35 SJL MS</option>';
+            tienda_options_str  += '<option value="Canto 5 SJL MS">Canto 5 SJL MS</option>';
+            tienda_options_str  += '<option value="CantoG 26 SJL MS">CantoG 26 SJL MS</option>';
+            tienda_options_str  += '<option value="CantoG 32 SJL MS">CantoG 32 SJL MS</option>';
+            tienda_options_str  += '<option value="Capilla SJM MS">Capilla SJM MS</option>';
+            tienda_options_str  += '<option value="Cara A9 CHS MS">Cara A9 CHS MS</option>';
+            tienda_options_str  += '<option value="Carabay 10 CO MS">Carabay 10 CO MS</option>';
+            tienda_options_str  += '<option value="Carabay 17 CO MS">Carabay 17 CO MS</option>';
+            tienda_options_str  += '<option value="CarabayA 4 CO MS">CarabayA 4 CO MS</option>';
+            tienda_options_str  += '<option value="Carapongo CHS MS">Carapongo CHS MS</option>';
+            tienda_options_str  += '<option value="Carrion1 TRU MS">Carrion1 TRU MS</option>';
+            tienda_options_str  += '<option value="Carrion10TRU MS">Carrion10TRU MS</option>';
+            tienda_options_str  += '<option value="Carrion12 SMP MS">Carrion12 SMP MS</option>';
+            tienda_options_str  += '<option value="Casal3 TRU MS">Casal3 TRU MS</option>';
+            tienda_options_str  += '<option value="Casale6 TRU MS">Casale6 TRU MS</option>';
+            tienda_options_str  += '<option value="Castilla 12 MA MS">Castilla 12 MA MS</option>';
+            tienda_options_str  += '<option value="Castilla 14 SC MS">Castilla 14 SC MS</option>';
+            tienda_options_str  += '<option value="Castilla 6 SM MS">Castilla 6 SM MS</option>';
+            tienda_options_str  += '<option value="Castilla 9 AQP MS">Castilla 9 AQP MS</option>';
+            tienda_options_str  += '<option value="Castilla3 LU MS">Castilla3 LU MS</option>';
+            tienda_options_str  += '<option value="Catarata 1 LM MS">Catarata 1 LM MS</option>';
+            tienda_options_str  += '<option value="CaudeR 14 CB MS">CaudeR 14 CB MS</option>';
+            tienda_options_str  += '<option value="Cedros CLL MS">Cedros CLL MS</option>';
+            tienda_options_str  += '<option value="Centenario 2 BR MS">Centenario 2 BR MS</option>';
+            tienda_options_str  += '<option value="Cerro 1 SC MS">Cerro 1 SC MS</option>';
+            tienda_options_str  += '<option value="CerroC9 AQP MS">CerroC9 AQP MS</option>';
+            tienda_options_str  += '<option value="Chancas 11 SA MS">Chancas 11 SA MS</option>';
+            tienda_options_str  += '<option value="Characas 1 AQP MS">Characas 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Chavez 1F VES MS">Chavez 1F VES MS</option>';
+            tienda_options_str  += '<option value="Chavez 22 IC MS">Chavez 22 IC MS</option>';
+            tienda_options_str  += '<option value="Chavez4 AQP MS">Chavez4 AQP MS</option>';
+            tienda_options_str  += '<option value="Chavin 3 SA MS">Chavin 3 SA MS</option>';
+            tienda_options_str  += '<option value="ChavinC24SMP MS">ChavinC24SMP MS</option>';
+            tienda_options_str  += '<option value="Chilca 1 MS">Chilca 1 MS</option>';
+            tienda_options_str  += '<option value="Chilca 2  MS">Chilca 2  MS</option>';
+            tienda_options_str  += '<option value="ChillonQ22 PP MS">ChillonQ22 PP MS</option>';
+            tienda_options_str  += '<option value="Chimu 11 SJL MS">Chimu 11 SJL MS</option>';
+            tienda_options_str  += '<option value="Chimu 4 SJL MS">Chimu 4 SJL MS</option>';
+            tienda_options_str  += '<option value="Chimu 9 SJL MS">Chimu 9 SJL MS</option>';
+            tienda_options_str  += '<option value="Chimu3 SJL MS">Chimu3 SJL MS</option>';
+            tienda_options_str  += '<option value="Chinchay IN MS">Chinchay IN MS</option>';
+            tienda_options_str  += '<option value="Chorri 3 CLL MS">Chorri 3 CLL MS</option>';
+            tienda_options_str  += '<option value="Chuluca 1 PIU MS">Chuluca 1 PIU MS</option>';
+            tienda_options_str  += '<option value="Ciene 18 CI MS">Ciene 18 CI MS</option>';
+            tienda_options_str  += '<option value="Ciene 19 CIE MS">Ciene 19 CIE MS</option>';
+            tienda_options_str  += '<option value="Cinerari47SC MS">Cinerari47SC MS</option>';
+            tienda_options_str  += '<option value="Circun P SJL MS">Circun P SJL MS</option>';
+            tienda_options_str  += '<option value="Circun31 PIU MS">Circun31 PIU MS</option>';
+            tienda_options_str  += '<option value="Ciruelas 1 CO MS">Ciruelas 1 CO MS</option>';
+            tienda_options_str  += '<option value="Clara1 TRU MS">Clara1 TRU MS</option>';
+            tienda_options_str  += '<option value="ColliW29 CO MS">ColliW29 CO MS</option>';
+            tienda_options_str  += '<option value="Collique 1 CO MS">Collique 1 CO MS</option>';
+            tienda_options_str  += '<option value="Collique 2 CO MS">Collique 2 CO MS</option>';
+            tienda_options_str  += '<option value="Collique3 CO MS">Collique3 CO MS</option>';
+            tienda_options_str  += '<option value="Colonial 46 BE MS">Colonial 46 BE MS</option>';
+            tienda_options_str  += '<option value="CombateA 15 SC MS">CombateA 15 SC MS</option>';
+            tienda_options_str  += '<option value="Comercio1 AQP MS">Comercio1 AQP MS</option>';
+            tienda_options_str  += '<option value="Condor 13 TRU MS">Condor 13 TRU MS</option>';
+            tienda_options_str  += '<option value="Condor 6 CB MS">Condor 6 CB MS</option>';
+            tienda_options_str  += '<option value="Condor 6 LM MS">Condor 6 LM MS</option>';
+            tienda_options_str  += '<option value="Condorc L6 CB MS">Condorc L6 CB MS</option>';
+            tienda_options_str  += '<option value="Construc 13 LM MS">Construc 13 LM MS</option>';
+            tienda_options_str  += '<option value="Construc 2 LM MS">Construc 2 LM MS</option>';
+            tienda_options_str  += '<option value="Construc 5 LM MS">Construc 5 LM MS</option>';
+            tienda_options_str  += '<option value="Copacaban 3 PP MS">Copacaban 3 PP MS</option>';
+            tienda_options_str  += '<option value="Coralina 6 SJL MS">Coralina 6 SJL MS</option>';
+            tienda_options_str  += '<option value="Corbeta 1 SC MS">Corbeta 1 SC MS</option>';
+            tienda_options_str  += '<option value="Cornejo 14 CE MS">Cornejo 14 CE MS</option>';
+            tienda_options_str  += '<option value="Cornejo 20 CE MS">Cornejo 20 CE MS</option>';
+            tienda_options_str  += '<option value="Covida LO MS">Covida LO MS</option>';
+            tienda_options_str  += '<option value="Cpescador 2 BE MS">Cpescador 2 BE MS</option>';
+            tienda_options_str  += '<option value="Credito SJM MS">Credito SJM MS</option>';
+            tienda_options_str  += '<option value="CruzMotuE 2 PP MS">CruzMotuE 2 PP MS</option>';
+            tienda_options_str  += '<option value="Cueva 7 PL MS">Cueva 7 PL MS</option>';
+            tienda_options_str  += '<option value="CulturaG 4 SA MS">CulturaG 4 SA MS</option>';
+            tienda_options_str  += '<option value="CulturaO1 SA MS">CulturaO1 SA MS</option>';
+            tienda_options_str  += '<option value="Cusco 7 MA MS">Cusco 7 MA MS</option>';
+            tienda_options_str  += '<option value="Cutervo 18 CE MS">Cutervo 18 CE MS</option>';
+            tienda_options_str  += '<option value="DANTE2 SU MS">DANTE2 SU MS</option>';
+            tienda_options_str  += '<option value="Danoza 1 VTA MS">Danoza 1 VTA MS</option>';
+            tienda_options_str  += '<option value="Dante6 SU MS">Dante6 SU MS</option>';
+            tienda_options_str  += '<option value="Defensor1SJM MS">Defensor1SJM MS</option>';
+            tienda_options_str  += '<option value="DelAire 13 SL MS">DelAire 13 SL MS</option>';
+            tienda_options_str  += '<option value="DelAire 7 LV MS">DelAire 7 LV MS</option>';
+            tienda_options_str  += '<option value="Derecha 3 HUA MS">Derecha 3 HUA MS</option>';
+            tienda_options_str  += '<option value="Dinthilac 3 SM MS">Dinthilac 3 SM MS</option>';
+            tienda_options_str  += '<option value="Dios S10 AQP MS">Dios S10 AQP MS</option>';
+            tienda_options_str  += '<option value="Dolores 2 AQP MS">Dolores 2 AQP MS</option>';
+            tienda_options_str  += '<option value="DomingoD8 PP MS">DomingoD8 PP MS</option>';
+            tienda_options_str  += '<option value="Dominic 25 SMP MS">Dominic 25 SMP MS</option>';
+            tienda_options_str  += '<option value="Dominic 33 CA MS">Dominic 33 CA MS</option>';
+            tienda_options_str  += '<option value="Dominico6 CA MS">Dominico6 CA MS</option>';
+            tienda_options_str  += '<option value="Dominicos 1 CA MS">Dominicos 1 CA MS</option>';
+            tienda_options_str  += '<option value="DonDiego 2 SC MS">DonDiego 2 SC MS</option>';
+            tienda_options_str  += '<option value="Donofrio 2 BR MS">Donofrio 2 BR MS</option>';
+            tienda_options_str  += '<option value="Dulanto 6 PL MS">Dulanto 6 PL MS</option>';
+            tienda_options_str  += '<option value="Durand 26 SL MS">Durand 26 SL MS</option>';
+            tienda_options_str  += '<option value="EDEN D14 AQP MS">EDEN D14 AQP MS</option>';
+            tienda_options_str  += '<option value="EJERCI 978 MI MS">EJERCI 978 MI MS</option>';
+            tienda_options_str  += '<option value="Echenique CHS MS">Echenique CHS MS</option>';
+            tienda_options_str  += '<option value="Eden H1 AQP MS">Eden H1 AQP MS</option>';
+            tienda_options_str  += '<option value="Edmundo 1 SC MS">Edmundo 1 SC MS</option>';
+            tienda_options_str  += '<option value="Ejerci999TRU MS">Ejerci999TRU MS</option>';
+            tienda_options_str  += '<option value="Ejercito 17 SI MS">Ejercito 17 SI MS</option>';
+            tienda_options_str  += '<option value="Ejercito 2 MI MS">Ejercito 2 MI MS</option>';
+            tienda_options_str  += '<option value="Ejercito 9 MA MS">Ejercito 9 MA MS</option>';
+            tienda_options_str  += '<option value="Ejercito MA MS">Ejercito MA MS</option>';
+            tienda_options_str  += '<option value="Eleboros 5 SJL MS">Eleboros 5 SJL MS</option>';
+            tienda_options_str  += '<option value="Elvira 6B LO MS">Elvira 6B LO MS</option>';
+            tienda_options_str  += '<option value="Enace7 AQP MS">Enace7 AQP MS</option>';
+            tienda_options_str  += '<option value="Escardo 6 SM MS">Escardo 6 SM MS</option>';
+            tienda_options_str  += '<option value="Escardo SM MS">Escardo SM MS</option>';
+            tienda_options_str  += '<option value="Esmeral 3 TRU MS">Esmeral 3 TRU MS</option>';
+            tienda_options_str  += '<option value="EstDePro LO MS">EstDePro LO MS</option>';
+            tienda_options_str  += '<option value="Estacion VMT MS">Estacion VMT MS</option>';
+            tienda_options_str  += '<option value="Eucalipto 9 SA MS">Eucalipto 9 SA MS</option>';
+            tienda_options_str  += '<option value="Eugenio10 LV MS">Eugenio10 LV MS</option>';
+            tienda_options_str  += '<option value="Faucett 2 SM MS">Faucett 2 SM MS</option>';
+            tienda_options_str  += '<option value="Febrero4AQP MS">Febrero4AQP MS</option>';
+            tienda_options_str  += '<option value="Ferre2 AQP MS">Ferre2 AQP MS</option>';
+            tienda_options_str  += '<option value="Fibonaci SU MS">Fibonaci SU MS</option>';
+            tienda_options_str  += '<option value="Filomeno 2 RI MS">Filomeno 2 RI MS</option>';
+            tienda_options_str  += '<option value="Flores 15 SJL MS">Flores 15 SJL MS</option>';
+            tienda_options_str  += '<option value="Flores 5 SJL MS">Flores 5 SJL MS</option>';
+            tienda_options_str  += '<option value="FloresC11 CY MS">FloresC11 CY MS</option>';
+            tienda_options_str  += '<option value="Floresta SJM MS">Floresta SJM MS</option>';
+            tienda_options_str  += '<option value="Francisca 3 CE MS">Francisca 3 CE MS</option>';
+            tienda_options_str  += '<option value="Fray 4 SMP MS">Fray 4 SMP MS</option>';
+            tienda_options_str  += '<option value="Fresnos 17 LM MS">Fresnos 17 LM MS</option>';
+            tienda_options_str  += '<option value="Fresnos 20 LM MS">Fresnos 20 LM MS</option>';
+            tienda_options_str  += '<option value="G Civil CLL MS">G Civil CLL MS</option>';
+            tienda_options_str  += '<option value="Gallesse 7 SM MS">Gallesse 7 SM MS</option>';
+            tienda_options_str  += '<option value="Galvez 19 LI MS">Galvez 19 LI MS</option>';
+            tienda_options_str  += '<option value="Galvez 4 BARR MS">Galvez 4 BARR MS</option>';
+            tienda_options_str  += '<option value="Gamarra 20 SMP MS">Gamarra 20 SMP MS</option>';
+            tienda_options_str  += '<option value="Gamarra 7 LO MS">Gamarra 7 LO MS</option>';
+            tienda_options_str  += '<option value="Gamez B27 AQP MS">Gamez B27 AQP MS</option>';
+            tienda_options_str  += '<option value="Garcia29 PH MS ">Garcia29 PH MS </option>';
+            tienda_options_str  += '<option value="Garzon 11 JM MS">Garzon 11 JM MS</option>';
+            tienda_options_str  += '<option value="Garzon 6 JM MS">Garzon 6 JM MS</option>';
+            tienda_options_str  += '<option value="Gaviot16 SC MS">Gaviot16 SC MS</option>';
+            tienda_options_str  += '<option value="Gaviotas 33 SC MS">Gaviotas 33 SC MS</option>';
+            tienda_options_str  += '<option value="German 3 SMP MS">German 3 SMP MS</option>';
+            tienda_options_str  += '<option value="Geroni 4 IC MS">Geroni 4 IC MS</option>';
+            tienda_options_str  += '<option value="Gloria C3 AT MS">Gloria C3 AT MS</option>';
+            tienda_options_str  += '<option value="GloriaB4 AQP MS">GloriaB4 AQP MS</option>';
+            tienda_options_str  += '<option value="Gonza4 MI MS">Gonza4 MI MS</option>';
+            tienda_options_str  += '<option value="Gonzales B11 LO MS">Gonzales B11 LO MS</option>';
+            tienda_options_str  += '<option value="Gonzales9 CO MS">Gonzales9 CO MS</option>';
+            tienda_options_str  += '<option value="Granda 24 SMP MS">Granda 24 SMP MS</option>';
+            tienda_options_str  += '<option value="Granda 30 SMP MS">Granda 30 SMP MS</option>';
+            tienda_options_str  += '<option value="Granda33 SMP MS">Granda33 SMP MS</option>';
+            tienda_options_str  += '<option value="Grau 1 TRU MS">Grau 1 TRU MS</option>';
+            tienda_options_str  += '<option value="Grau 15 PA MS">Grau 15 PA MS</option>';
+            tienda_options_str  += '<option value="Grau 3 BA MS">Grau 3 BA MS</option>';
+            tienda_options_str  += '<option value="Grau 3 LU MS">Grau 3 LU MS</option>';
+            tienda_options_str  += '<option value="Grau 5 PU MS">Grau 5 PU MS</option>';
+            tienda_options_str  += '<option value="Grau A27 PIU MS">Grau A27 PIU MS</option>';
+            tienda_options_str  += '<option value="Grau B11 AQP MS">Grau B11 AQP MS</option>';
+            tienda_options_str  += '<option value="Grau14 TRU MS ">Grau14 TRU MS </option>';
+            tienda_options_str  += '<option value="Grau16 PIU MS">Grau16 PIU MS</option>';
+            tienda_options_str  += '<option value="Grau20 PIU MS">Grau20 PIU MS</option>';
+            tienda_options_str  += '<option value="Grau23 PIU MS">Grau23 PIU MS</option>';
+            tienda_options_str  += '<option value="GuardiH10PIU MS">GuardiH10PIU MS</option>';
+            tienda_options_str  += '<option value="GuardiM6 PIU MS">GuardiM6 PIU MS</option>';
+            tienda_options_str  += '<option value="Guardia 4 AQP MS">Guardia 4 AQP MS</option>';
+            tienda_options_str  += '<option value="Guardia12CLL MS">Guardia12CLL MS</option>';
+            tienda_options_str  += '<option value="GuardiaA 7 CLL MS">GuardiaA 7 CLL MS</option>';
+            tienda_options_str  += '<option value="GuardiaA1 CLL MS">GuardiaA1 CLL MS</option>';
+            tienda_options_str  += '<option value="GuardiaD 5 SC MS">GuardiaD 5 SC MS</option>';
+            tienda_options_str  += '<option value="Gulman 1 PIU MS">Gulman 1 PIU MS</option>';
+            tienda_options_str  += '<option value="Gulman 8 PIU MS">Gulman 8 PIU MS</option>';
+            tienda_options_str  += '<option value="Habich131SMP MS">Habich131SMP MS</option>';
+            tienda_options_str  += '<option value="Habich5 SMP MS">Habich5 SMP MS</option>';
+            tienda_options_str  += '<option value="Habich516SMP MS">Habich516SMP MS</option>';
+            tienda_options_str  += '<option value="Haya 2 LP MS">Haya 2 LP MS</option>';
+            tienda_options_str  += '<option value="Heraud 4 SA MS">Heraud 4 SA MS</option>';
+            tienda_options_str  += '<option value="Hermes 2 AT MS">Hermes 2 AT MS</option>';
+            tienda_options_str  += '<option value="HerreF 13 SJM MS">HerreF 13 SJM MS</option>';
+            tienda_options_str  += '<option value="Higos 1 EA MS">Higos 1 EA MS</option>';
+            tienda_options_str  += '<option value="Horizona1SMP MS">Horizona1SMP MS</option>';
+            tienda_options_str  += '<option value="Hoyle 2 EA MS">Hoyle 2 EA MS</option>';
+            tienda_options_str  += '<option value="Huaca1 PI MS">Huaca1 PI MS</option>';
+            tienda_options_str  += '<option value="Huaman2 TRU MS">Huaman2 TRU MS</option>';
+            tienda_options_str  += '<option value="Huanca D5 SA MS">Huanca D5 SA MS</option>';
+            tienda_options_str  += '<option value="Huandoy 2 LO MS">Huandoy 2 LO MS</option>';
+            tienda_options_str  += '<option value="HuandoyL 1 LO MS">HuandoyL 1 LO MS</option>';
+            tienda_options_str  += '<option value="Huanuco 10 CE MS">Huanuco 10 CE MS</option>';
+            tienda_options_str  += '<option value="Huaylas5 CLL MS">Huaylas5 CLL MS</option>';
+            tienda_options_str  += '<option value="Iglesia 8 SJM MS">Iglesia 8 SJM MS</option>';
+            tienda_options_str  += '<option value="Iglesias VES MS">Iglesias VES MS</option>';
+            tienda_options_str  += '<option value="Iglesias5 CLL MS">Iglesias5 CLL MS</option>';
+            tienda_options_str  += '<option value="Inca 68 VMT MS">Inca 68 VMT MS</option>';
+            tienda_options_str  += '<option value="IncaJ24 VE MS">IncaJ24 VE MS</option>';
+            tienda_options_str  += '<option value="IncaRoca VMT MS">IncaRoca VMT MS</option>';
+            tienda_options_str  += '<option value="Incas 4 CO MS">Incas 4 CO MS</option>';
+            tienda_options_str  += '<option value="Incas 4? TRU MS">Incas 4? TRU MS</option>';
+            tienda_options_str  += '<option value="Indepen1 AQP MS">Indepen1 AQP MS</option>';
+            tienda_options_str  += '<option value="Indepen20VMT MS">Indepen20VMT MS</option>';
+            tienda_options_str  += '<option value="Indoame 5 TRU MS">Indoame 5 TRU MS</option>';
+            tienda_options_str  += '<option value="Indust 30 LM MS">Indust 30 LM MS</option>';
+            tienda_options_str  += '<option value="Industria 1 AT MS">Industria 1 AT MS</option>';
+            tienda_options_str  += '<option value="Ingenier 4 LM MS">Ingenier 4 LM MS</option>';
+            tienda_options_str  += '<option value="Insurgen 12 BE MS">Insurgen 12 BE MS</option>';
+            tienda_options_str  += '<option value="Insurgent 7 SM MS">Insurgent 7 SM MS</option>';
+            tienda_options_str  += '<option value="InterT8 SJL MS">InterT8 SJL MS</option>';
+            tienda_options_str  += '<option value="Iquique CA MS">Iquique CA MS</option>';
+            tienda_options_str  += '<option value="Izagui 14 LO MS">Izagui 14 LO MS</option>';
+            tienda_options_str  += '<option value="Izagui 26 SMP MS">Izagui 26 SMP MS</option>';
+            tienda_options_str  += '<option value="Izagui11 LO MS">Izagui11 LO MS</option>';
+            tienda_options_str  += '<option value="Izagui511 LO MS">Izagui511 LO MS</option>';
+            tienda_options_str  += '<option value="IzaguiA 3 SMP MS">IzaguiA 3 SMP MS</option>';
+            tienda_options_str  += '<option value="JC Tello 6 LI MS">JC Tello 6 LI MS</option>';
+            tienda_options_str  += '<option value="JC Tello HUA MS">JC Tello HUA MS</option>';
+            tienda_options_str  += '<option value="JCM B32 VMT MS">JCM B32 VMT MS</option>';
+            tienda_options_str  += '<option value="JChavez 19 SC MS">JChavez 19 SC MS</option>';
+            tienda_options_str  += '<option value="JMorales SJM MS">JMorales SJM MS</option>';
+            tienda_options_str  += '<option value="JOlaya 18 VTA MS">JOlaya 18 VTA MS</option>';
+            tienda_options_str  += '<option value="JPradoNO 3 AT MS">JPradoNO 3 AT MS</option>';
+            tienda_options_str  += '<option value="Jardin B17 PIU MS">Jardin B17 PIU MS</option>';
+            tienda_options_str  += '<option value="Jardin B3 SJL MS">Jardin B3 SJL MS</option>';
+            tienda_options_str  += '<option value="Jaspes 20 SJL MS">Jaspes 20 SJL MS</option>';
+            tienda_options_str  += '<option value="Jazmin1 IND MS">Jazmin1 IND MS</option>';
+            tienda_options_str  += '<option value="Jerusa4 TRU MS">Jerusa4 TRU MS</option>';
+            tienda_options_str  += '<option value="Jesus 22 AQP MS">Jesus 22 AQP MS</option>';
+            tienda_options_str  += '<option value="JesusX1 TRU MS">JesusX1 TRU MS</option>';
+            tienda_options_str  += '<option value="Jiron8H 2 CO MS">Jiron8H 2 CO MS</option>';
+            tienda_options_str  += '<option value="Jose 1 AQP MS">Jose 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Jose1 PI MS">Jose1 PI MS</option>';
+            tienda_options_str  += '<option value="Jose7 VMT MS">Jose7 VMT MS</option>';
+            tienda_options_str  += '<option value="JoseCM 20 AT MS">JoseCM 20 AT MS</option>';
+            tienda_options_str  += '<option value="JoseLeal 8 LI MS">JoseLeal 8 LI MS</option>';
+            tienda_options_str  += '<option value="JoseM 22 AN MS">JoseM 22 AN MS</option>';
+            tienda_options_str  += '<option value="JoseM AN MS">JoseM AN MS</option>';
+            tienda_options_str  += '<option value="Josey J4 CB MS">Josey J4 CB MS</option>';
+            tienda_options_str  += '<option value="Juan 5 TRU MS">Juan 5 TRU MS</option>';
+            tienda_options_str  += '<option value="Julio 4 SJM MS">Julio 4 SJM MS</option>';
+            tienda_options_str  += '<option value="LUmbrosa SC MS">LUmbrosa SC MS</option>';
+            tienda_options_str  += '<option value="LaCabana SJM MS">LaCabana SJM MS</option>';
+            tienda_options_str  += '<option value="LaFuente 3 CO MS">LaFuente 3 CO MS</option>';
+            tienda_options_str  += '<option value="LaFuente2 CO MS">LaFuente2 CO MS</option>';
+            tienda_options_str  += '<option value="LaFuente4 CO MS">LaFuente4 CO MS</option>';
+            tienda_options_str  += '<option value="Lambra 1 AQP MS">Lambra 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Larco 6 TRU MS">Larco 6 TRU MS</option>';
+            tienda_options_str  += '<option value="Larco2 TRU MS">Larco2 TRU MS</option>';
+            tienda_options_str  += '<option value="Larra 1 JM MS">Larra 1 JM MS</option>';
+            tienda_options_str  += '<option value="LasDalias AT MS">LasDalias AT MS</option>';
+            tienda_options_str  += '<option value="Lavalle 1 SJM MS">Lavalle 1 SJM MS</option>';
+            tienda_options_str  += '<option value="Leguia10 PL MS">Leguia10 PL MS</option>';
+            tienda_options_str  += '<option value="Leon3 AQP MS">Leon3 AQP MS</option>';
+            tienda_options_str  += '<option value="Leyendas 3 SM MS">Leyendas 3 SM MS</option>';
+            tienda_options_str  += '<option value="Libertad 15 SM MS">Libertad 15 SM MS</option>';
+            tienda_options_str  += '<option value="Libertad 7 SM MS">Libertad 7 SM MS</option>';
+            tienda_options_str  += '<option value="Libertad29 SM MS">Libertad29 SM MS</option>';
+            tienda_options_str  += '<option value="Lima 11 Barr MS">Lima 11 Barr MS</option>';
+            tienda_options_str  += '<option value="Lima 2 SM MS">Lima 2 SM MS</option>';
+            tienda_options_str  += '<option value="Lima 3 SJL MS">Lima 3 SJL MS</option>';
+            tienda_options_str  += '<option value="Lima 3632 SMP MS">Lima 3632 SMP MS</option>';
+            tienda_options_str  += '<option value="Lima 41 SMP MS">Lima 41 SMP MS</option>';
+            tienda_options_str  += '<option value="Lima 9 VMT MS">Lima 9 VMT MS</option>';
+            tienda_options_str  += '<option value="Lima5 AQP MS">Lima5 AQP MS</option>';
+            tienda_options_str  += '<option value="Lima7 CHO MS">Lima7 CHO MS</option>';
+            tienda_options_str  += '<option value="Lirios1 PI MS">Lirios1 PI MS</option>';
+            tienda_options_str  += '<option value="Lomas 12 SJL MS">Lomas 12 SJL MS</option>';
+            tienda_options_str  += '<option value="Lomas RI MS">Lomas RI MS</option>';
+            tienda_options_str  += '<option value="Lomas27PP MS">Lomas27PP MS</option>';
+            tienda_options_str  += '<option value="Lomas60 AN MS">Lomas60 AN MS</option>';
+            tienda_options_str  += '<option value="LomasA6 PA MS">LomasA6 PA MS</option>';
+            tienda_options_str  += '<option value="Lorenzo5 CLL MS">Lorenzo5 CLL MS</option>';
+            tienda_options_str  += '<option value="Loreto 2 LM MS">Loreto 2 LM MS</option>';
+            tienda_options_str  += '<option value="Loreto 3 BR MS">Loreto 3 BR MS</option>';
+            tienda_options_str  += '<option value="Lucas 2 RI MS">Lucas 2 RI MS</option>';
+            tienda_options_str  += '<option value="Luna 2 SMP MS">Luna 2 SMP MS</option>';
+            tienda_options_str  += '<option value="Lurin 40 LU MS">Lurin 40 LU MS</option>';
+            tienda_options_str  += '<option value="Lurin LU MS">Lurin LU MS</option>';
+            tienda_options_str  += '<option value="Luzuriaga 5 JM MS">Luzuriaga 5 JM MS</option>';
+            tienda_options_str  += '<option value="MBocanegra CA MS">MBocanegra CA MS</option>';
+            tienda_options_str  += '<option value="MOchenta CO MS">MOchenta CO MS</option>';
+            tienda_options_str  += '<option value="Madre 1 SA MS">Madre 1 SA MS</option>';
+            tienda_options_str  += '<option value="Madresel 3 CB MS">Madresel 3 CB MS</option>';
+            tienda_options_str  += '<option value="Majes1AQP MS">Majes1AQP MS</option>';
+            tienda_options_str  += '<option value="Mala L7 MS">Mala L7 MS</option>';
+            tienda_options_str  += '<option value="Malasquez MY MS">Malasquez MY MS</option>';
+            tienda_options_str  += '<option value="Malvi C6 AQP MS">Malvi C6 AQP MS</option>';
+            tienda_options_str  += '<option value="Mangoma 3 SJL MS">Mangoma 3 SJL MS</option>';
+            tienda_options_str  += '<option value="Mansi16 TRU MS">Mansi16 TRU MS</option>';
+            tienda_options_str  += '<option value="Manue L6 SC MS">Manue L6 SC MS</option>';
+            tienda_options_str  += '<option value="ManzanG19SMP MS">ManzanG19SMP MS</option>';
+            tienda_options_str  += '<option value="Mar 2 SJL MS">Mar 2 SJL MS</option>';
+            tienda_options_str  += '<option value="Maran 3 AQP MS">Maran 3 AQP MS</option>';
+            tienda_options_str  += '<option value="Maranon 6 LO MS">Maranon 6 LO MS</option>';
+            tienda_options_str  += '<option value="Marcave 1 PIU MS">Marcave 1 PIU MS</option>';
+            tienda_options_str  += '<option value="MarcoC 22 SMP MS">MarcoC 22 SMP MS</option>';
+            tienda_options_str  += '<option value="Mariate 17 VMT MS">Mariate 17 VMT MS</option>';
+            tienda_options_str  += '<option value="Mariate 2 CB MS">Mariate 2 CB MS</option>';
+            tienda_options_str  += '<option value="Mariate 8 VMT MS">Mariate 8 VMT MS</option>';
+            tienda_options_str  += '<option value="Mariate A24 EA MS">Mariate A24 EA MS</option>';
+            tienda_options_str  += '<option value="Mariate741 AT MS">Mariate741 AT MS</option>';
+            tienda_options_str  += '<option value="Mariateg 2 VES MS">Mariateg 2 VES MS</option>';
+            tienda_options_str  += '<option value="Marina 28 SM MS">Marina 28 SM MS</option>';
+            tienda_options_str  += '<option value="Marina5 TRU MS">Marina5 TRU MS</option>';
+            tienda_options_str  += '<option value="Marquez 5G CLL MS">Marquez 5G CLL MS</option>';
+            tienda_options_str  += '<option value="Marsano 36 SC MS">Marsano 36 SC MS</option>';
+            tienda_options_str  += '<option value="Marsano 5 SC MS">Marsano 5 SC MS</option>';
+            tienda_options_str  += '<option value="Martin 1 AQP MS">Martin 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Martin 6 PIU MS">Martin 6 PIU MS</option>';
+            tienda_options_str  += '<option value="Martin K23 SJL MS">Martin K23 SJL MS</option>';
+            tienda_options_str  += '<option value="Martin16 IC MS">Martin16 IC MS</option>';
+            tienda_options_str  += '<option value="Martin27 CLL MS">Martin27 CLL MS</option>';
+            tienda_options_str  += '<option value="MartinK 16 SJL MS">MartinK 16 SJL MS</option>';
+            tienda_options_str  += '<option value="Martine2 CI MS">Martine2 CI MS</option>';
+            tienda_options_str  += '<option value="Mass Pedro 2 BR MS">Mass Pedro 2 BR MS</option>';
+            tienda_options_str  += '<option value="Massaro 2 CHI MS">Massaro 2 CHI MS</option>';
+            tienda_options_str  += '<option value="Matellini CLL MS">Matellini CLL MS</option>';
+            tienda_options_str  += '<option value="Mayo D12 MS">Mayo D12 MS</option>';
+            tienda_options_str  += '<option value="Mayolo 17 SMP MS">Mayolo 17 SMP MS</option>';
+            tienda_options_str  += '<option value="Melgar4 CDL MS">Melgar4 CDL MS</option>';
+            tienda_options_str  += '<option value="Meliton 3 AT MS">Meliton 3 AT MS</option>';
+            tienda_options_str  += '<option value="Mendibu 12 MI MS">Mendibu 12 MI MS</option>';
+            tienda_options_str  += '<option value="Mercado SJL MS">Mercado SJL MS</option>';
+            tienda_options_str  += '<option value="Merced 1 AQP MS">Merced 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Merced 1 Huau MS">Merced 1 Huau MS</option>';
+            tienda_options_str  += '<option value="Merced 3 TRU MS">Merced 3 TRU MS</option>';
+            tienda_options_str  += '<option value="Merced 4 HUAC MS">Merced 4 HUAC MS</option>';
+            tienda_options_str  += '<option value="Merced3 SMP MS">Merced3 SMP MS</option>';
+            tienda_options_str  += '<option value="Merino 24 LI MS">Merino 24 LI MS</option>';
+            tienda_options_str  += '<option value="Metrop 10 AT MS">Metrop 10 AT MS</option>';
+            tienda_options_str  += '<option value="Metropoa18 TRU MS">Metropoa18 TRU MS</option>';
+            tienda_options_str  += '<option value="Metros11 ATE MS">Metros11 ATE MS</option>';
+            tienda_options_str  += '<option value="Mexico 5 LV MS">Mexico 5 LV MS</option>';
+            tienda_options_str  += '<option value="Mexico CO MS">Mexico CO MS</option>';
+            tienda_options_str  += '<option value="MexicoCO 6 CO MS">MexicoCO 6 CO MS</option>';
+            tienda_options_str  += '<option value="Micaela L5 VES MS">Micaela L5 VES MS</option>';
+            tienda_options_str  += '<option value="MicaelaN 4 VES MS">MicaelaN 4 VES MS</option>';
+            tienda_options_str  += '<option value="Migue A3 PIU MS">Migue A3 PIU MS</option>';
+            tienda_options_str  += '<option value="MigueG14 SJL MS">MigueG14 SJL MS</option>';
+            tienda_options_str  += '<option value="Miguel 2 PIU MS">Miguel 2 PIU MS</option>';
+            tienda_options_str  += '<option value="Miguel 2 TRU MS">Miguel 2 TRU MS</option>';
+            tienda_options_str  += '<option value="Miguel4 AQP MS">Miguel4 AQP MS</option>';
+            tienda_options_str  += '<option value="Militar22 LI MS">Militar22 LI MS</option>';
+            tienda_options_str  += '<option value="Miller 9 JM MS">Miller 9 JM MS</option>';
+            tienda_options_str  += '<option value="Minka CA MS">Minka CA MS</option>';
+            tienda_options_str  += '<option value="Moche8 TRU MS">Moche8 TRU MS</option>';
+            tienda_options_str  += '<option value="Moncloa 26 CE MS">Moncloa 26 CE MS</option>';
+            tienda_options_str  += '<option value="Monte 1 SJL MS">Monte 1 SJL MS</option>';
+            tienda_options_str  += '<option value="Montec B6 VE MS">Montec B6 VE MS</option>';
+            tienda_options_str  += '<option value="Monteu3 SJL MS">Monteu3 SJL MS</option>';
+            tienda_options_str  += '<option value="Moreno 9 SU MS">Moreno 9 SU MS</option>';
+            tienda_options_str  += '<option value="Morropon 1 CO MS">Morropon 1 CO MS</option>';
+            tienda_options_str  += '<option value="Mostajo 8 AQP MS">Mostajo 8 AQP MS</option>';
+            tienda_options_str  += '<option value="Napo 2 AT MS">Napo 2 AT MS</option>';
+            tienda_options_str  += '<option value="Naran 17 LO MS">Naran 17 LO MS</option>';
+            tienda_options_str  += '<option value="Naranjal 12 LO MS">Naranjal 12 LO MS</option>';
+            tienda_options_str  += '<option value="Nazarenas 2 SC MS">Nazarenas 2 SC MS</option>';
+            tienda_options_str  += '<option value="NestorC6 CA MS">NestorC6 CA MS</option>';
+            tienda_options_str  += '<option value="Nicolini 2 SMP MS">Nicolini 2 SMP MS</option>';
+            tienda_options_str  += '<option value="NogalesX35 SA MS">NogalesX35 SA MS</option>';
+            tienda_options_str  += '<option value="Noviembre 1 IN MS">Noviembre 1 IN MS</option>';
+            tienda_options_str  += '<option value="Oasis VES MS">Oasis VES MS</option>';
+            tienda_options_str  += '<option value="Obrera 15 AQP MS">Obrera 15 AQP MS</option>';
+            tienda_options_str  += '<option value="Octubre 7 TRU MS">Octubre 7 TRU MS</option>';
+            tienda_options_str  += '<option value="Octubre E5 CLL MS">Octubre E5 CLL MS</option>';
+            tienda_options_str  += '<option value="Olaya4 VTM MS">Olaya4 VTM MS</option>';
+            tienda_options_str  += '<option value="Olivos 6 SMP MS">Olivos 6 SMP MS</option>';
+            tienda_options_str  += '<option value="Olivos O72 SMP MS">Olivos O72 SMP MS</option>';
+            tienda_options_str  += '<option value="OlivosD 8 SMP MS">OlivosD 8 SMP MS</option>';
+            tienda_options_str  += '<option value="Ollantay SJM MS">Ollantay SJM MS</option>';
+            tienda_options_str  += '<option value="Ollantay3 VMT MS">Ollantay3 VMT MS</option>';
+            tienda_options_str  += '<option value="Oman 1 SJL MS">Oman 1 SJL MS</option>';
+            tienda_options_str  += '<option value="Ordonez 1 SB MS">Ordonez 1 SB MS</option>';
+            tienda_options_str  += '<option value="OteroA3 SJL MS">OteroA3 SJL MS</option>';
+            tienda_options_str  += '<option value="P Hermosa 21 MS">P Hermosa 21 MS</option>';
+            tienda_options_str  += '<option value="PECueva VTA MS">PECueva VTA MS</option>';
+            tienda_options_str  += '<option value="Pablo 1 BE MS">Pablo 1 BE MS</option>';
+            tienda_options_str  += '<option value="Pacas 16F SMP MS">Pacas 16F SMP MS</option>';
+            tienda_options_str  += '<option value="Pacas 46 CA MS">Pacas 46 CA MS</option>';
+            tienda_options_str  += '<option value="Pachacamac LU MS">Pachacamac LU MS</option>';
+            tienda_options_str  += '<option value="Pachacu 21 VMT MS">Pachacu 21 VMT MS</option>';
+            tienda_options_str  += '<option value="PachacuE 9 VE MS">PachacuE 9 VE MS</option>';
+            tienda_options_str  += '<option value="PalacG19 AQP MS">PalacG19 AQP MS</option>';
+            tienda_options_str  += '<option value="Palma8 TRU MS">Palma8 TRU MS</option>';
+            tienda_options_str  += '<option value="Palmera B1 PIU MS">Palmera B1 PIU MS</option>';
+            tienda_options_str  += '<option value="PalmeraZ7 LO MS">PalmeraZ7 LO MS</option>';
+            tienda_options_str  += '<option value="Palmeras LO MS">Palmeras LO MS</option>';
+            tienda_options_str  += '<option value="Pampas 4 LO MS">Pampas 4 LO MS</option>';
+            tienda_options_str  += '<option value="Panama 10 IC MS">Panama 10 IC MS</option>';
+            tienda_options_str  += '<option value="Panama 54 SU MS">Panama 54 SU MS</option>';
+            tienda_options_str  += '<option value="Paname A1 TRU MS">Paname A1 TRU MS</option>';
+            tienda_options_str  += '<option value="Paname4 TRU MS">Paname4 TRU MS</option>';
+            tienda_options_str  += '<option value="Paraiso PA MS">Paraiso PA MS</option>';
+            tienda_options_str  += '<option value="Paraiso1UVMT MS">Paraiso1UVMT MS</option>';
+            tienda_options_str  += '<option value="Parconaq1 IC MS">Parconaq1 IC MS</option>';
+            tienda_options_str  += '<option value="Pardo 1 CHI MS">Pardo 1 CHI MS</option>';
+            tienda_options_str  += '<option value="Pariachi 35 AT MS">Pariachi 35 AT MS</option>';
+            tienda_options_str  += '<option value="Pariahuan 6 LO MS">Pariahuan 6 LO MS</option>';
+            tienda_options_str  += '<option value="ParqVilla LU MS">ParqVilla LU MS</option>';
+            tienda_options_str  += '<option value="Parque5 SJL MS">Parque5 SJL MS</option>';
+            tienda_options_str  += '<option value="Pastor 1 PL MS">Pastor 1 PL MS</option>';
+            tienda_options_str  += '<option value="PastorF 2 VES MS">PastorF 2 VES MS</option>';
+            tienda_options_str  += '<option value="PastorS 1 VES MS">PastorS 1 VES MS</option>';
+            tienda_options_str  += '<option value="Pativilca 2 MS">Pativilca 2 MS</option>';
+            tienda_options_str  += '<option value="Patriota 4 SM MS">Patriota 4 SM MS</option>';
+            tienda_options_str  += '<option value="Paz 2 AQP MS">Paz 2 AQP MS</option>';
+            tienda_options_str  += '<option value="Pedro T1 SJL MS">Pedro T1 SJL MS</option>';
+            tienda_options_str  += '<option value="PedroA3 CB MS">PedroA3 CB MS</option>';
+            tienda_options_str  += '<option value="Peru 25 SMP MS">Peru 25 SMP MS</option>';
+            tienda_options_str  += '<option value="Peru 3 AQP MS">Peru 3 AQP MS</option>';
+            tienda_options_str  += '<option value="Peru 50 CA MS">Peru 50 CA MS</option>';
+            tienda_options_str  += '<option value="Peru22 SMP MS">Peru22 SMP MS</option>';
+            tienda_options_str  += '<option value="Peru38 SMP MS">Peru38 SMP MS</option>';
+            tienda_options_str  += '<option value="Petit 13 CE MS">Petit 13 CE MS</option>';
+            tienda_options_str  += '<option value="Petit 30 SI MS">Petit 30 SI MS</option>';
+            tienda_options_str  += '<option value="Petit47 MI MS">Petit47 MI MS</option>';
+            tienda_options_str  += '<option value="Pierola 1 AQP MS">Pierola 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Pimentel2 CO MS">Pimentel2 CO MS</option>';
+            tienda_options_str  += '<option value="Pinos 14 CO MS">Pinos 14 CO MS</option>';
+            tienda_options_str  += '<option value="Pinos3 TRU MS">Pinos3 TRU MS</option>';
+            tienda_options_str  += '<option value="Piramide 4 SJL MS">Piramide 4 SJL MS</option>';
+            tienda_options_str  += '<option value="Pizarro 1 AQP MS">Pizarro 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Playar5 VE MS ">Playar5 VE MS </option>';
+            tienda_options_str  += '<option value="Plaza PA MS">Plaza PA MS</option>';
+            tienda_options_str  += '<option value="Pleyad13 CLL MS">Pleyad13 CLL MS</option>';
+            tienda_options_str  += '<option value="Polonia 6 SJL MS">Polonia 6 SJL MS</option>';
+            tienda_options_str  += '<option value="Pomabam 2 BR MS">Pomabam 2 BR MS</option>';
+            tienda_options_str  += '<option value="Porvenir 3 PP MS">Porvenir 3 PP MS</option>';
+            tienda_options_str  += '<option value="Postes 1 SJL MS">Postes 1 SJL MS</option>';
+            tienda_options_str  += '<option value="Prado F17 AQP MS">Prado F17 AQP MS</option>';
+            tienda_options_str  += '<option value="Prado V24 AT MS">Prado V24 AT MS</option>';
+            tienda_options_str  += '<option value="PradoC39 LM MS">PradoC39 LM MS</option>';
+            tienda_options_str  += '<option value="Precurso 2 SM MS">Precurso 2 SM MS</option>';
+            tienda_options_str  += '<option value="Precurso6 SM MS ">Precurso6 SM MS </option>';
+            tienda_options_str  += '<option value="Prima 2 PP MS">Prima 2 PP MS</option>';
+            tienda_options_str  += '<option value="Primavera VMT MS">Primavera VMT MS</option>';
+            tienda_options_str  += '<option value="Principal 1 PIU MS">Principal 1 PIU MS</option>';
+            tienda_options_str  += '<option value="Principal5 SU MS">Principal5 SU MS</option>';
+            tienda_options_str  += '<option value="Proce 78 LO MS">Proce 78 LO MS</option>';
+            tienda_options_str  += '<option value="ProceK37 SJL MS">ProceK37 SJL MS</option>';
+            tienda_options_str  += '<option value="Proceg 3 LO MS">Proceg 3 LO MS</option>';
+            tienda_options_str  += '<option value="Procer 39 SJL MS">Procer 39 SJL MS</option>';
+            tienda_options_str  += '<option value="Proceres 1 SJL MS">Proceres 1 SJL MS</option>';
+            tienda_options_str  += '<option value="Proceres 2 SMP MS">Proceres 2 SMP MS</option>';
+            tienda_options_str  += '<option value="Proceres SC MS">Proceres SC MS</option>';
+            tienda_options_str  += '<option value="Proge 13 PIU MS">Proge 13 PIU MS</option>';
+            tienda_options_str  += '<option value="Progres 2 AQP MS">Progres 2 AQP MS</option>';
+            tienda_options_str  += '<option value="Progres 6 AQP MS">Progres 6 AQP MS</option>';
+            tienda_options_str  += '<option value="Progresol VES MS">Progresol VES MS</option>';
+            tienda_options_str  += '<option value="Progreu14 CB MS ">Progreu14 CB MS </option>';
+            tienda_options_str  += '<option value="Pucusana 1 MS">Pucusana 1 MS</option>';
+            tienda_options_str  += '<option value="PucusanaD13 MS">PucusanaD13 MS</option>';
+            tienda_options_str  += '<option value="Puerta14AQP MS">Puerta14AQP MS</option>';
+            tienda_options_str  += '<option value="Punta Negra 1 MS">Punta Negra 1 MS</option>';
+            tienda_options_str  += '<option value="QhantuPza AT MS">QhantuPza AT MS</option>';
+            tienda_options_str  += '<option value="QuechuaE 20 AT MS">QuechuaE 20 AT MS</option>';
+            tienda_options_str  += '<option value="Quechuas 10 AT MS">Quechuas 10 AT MS</option>';
+            tienda_options_str  += '<option value="Quechuas 9 AT MS">Quechuas 9 AT MS</option>';
+            tienda_options_str  += '<option value="Quilca10 CA MS">Quilca10 CA MS</option>';
+            tienda_options_str  += '<option value="R Palma 1 PP MS">R Palma 1 PP MS</option>';
+            tienda_options_str  += '<option value="Ramon 1 PIU MS">Ramon 1 PIU MS</option>';
+            tienda_options_str  += '<option value="Recavar11 SU MS">Recavar11 SU MS</option>';
+            tienda_options_str  += '<option value="Reducto 9 MI MS">Reducto 9 MI MS</option>';
+            tienda_options_str  += '<option value="Reforma 13 TRU MS">Reforma 13 TRU MS</option>';
+            tienda_options_str  += '<option value="RemoB 17 PP MS">RemoB 17 PP MS</option>';
+            tienda_options_str  += '<option value="Retablo 11 CO MS">Retablo 11 CO MS</option>';
+            tienda_options_str  += '<option value="Retablo 13 CO MS">Retablo 13 CO MS</option>';
+            tienda_options_str  += '<option value="Revolu 12 AQP MS">Revolu 12 AQP MS</option>';
+            tienda_options_str  += '<option value="Revoluc 14 CO MS">Revoluc 14 CO MS</option>';
+            tienda_options_str  += '<option value="Risso 3 LI MS">Risso 3 LI MS</option>';
+            tienda_options_str  += '<option value="Rodri 14 AQP MS">Rodri 14 AQP MS</option>';
+            tienda_options_str  += '<option value="Romero9 SJM MS">Romero9 SJM MS</option>';
+            tienda_options_str  += '<option value="Roox VES MS">Roox VES MS</option>';
+            tienda_options_str  += '<option value="Rosa 1 SC MS">Rosa 1 SC MS</option>';
+            tienda_options_str  += '<option value="Rosa 10 SMP MS">Rosa 10 SMP MS</option>';
+            tienda_options_str  += '<option value="Rosa 14 PP MS">Rosa 14 PP MS</option>';
+            tienda_options_str  += '<option value="Rosa N3 SJL MS">Rosa N3 SJL MS</option>';
+            tienda_options_str  += '<option value="Rosa V25 SJL MS">Rosa V25 SJL MS</option>';
+            tienda_options_str  += '<option value="Rosacruz 1 AT MS">Rosacruz 1 AT MS</option>';
+            tienda_options_str  += '<option value="Rosaf6 SJL MS">Rosaf6 SJL MS</option>';
+            tienda_options_str  += '<option value="RosalZ 1 VES MS">RosalZ 1 VES MS</option>';
+            tienda_options_str  += '<option value="Rosales 1 SJM MS">Rosales 1 SJM MS</option>';
+            tienda_options_str  += '<option value="Rosaluz G22 PP MS">Rosaluz G22 PP MS</option>';
+            tienda_options_str  += '<option value="RosaluzL 5 PP MS">RosaluzL 5 PP MS</option>';
+            tienda_options_str  += '<option value="Rosatoro 7 SL MS">Rosatoro 7 SL MS</option>';
+            tienda_options_str  += '<option value="Ruisenore 3 SA MS">Ruisenore 3 SA MS</option>';
+            tienda_options_str  += '<option value="SAntonio CB MS">SAntonio CB MS</option>';
+            tienda_options_str  += '<option value="SFelipe 1 CO MS">SFelipe 1 CO MS</option>';
+            tienda_options_str  += '<option value="SFelipe 6 CO MS">SFelipe 6 CO MS</option>';
+            tienda_options_str  += '<option value="SPaulo 18 SMP MS">SPaulo 18 SMP MS</option>';
+            tienda_options_str  += '<option value="SPedro CLL MS">SPedro CLL MS</option>';
+            tienda_options_str  += '<option value="SRosa 1 SJL MS">SRosa 1 SJL MS</option>';
+            tienda_options_str  += '<option value="SRosa 17 SJL MS">SRosa 17 SJL MS</option>';
+            tienda_options_str  += '<option value="Saenz 3 CA MS">Saenz 3 CA MS</option>';
+            tienda_options_str  += '<option value="Saenz 8 CA MS">Saenz 8 CA MS</option>';
+            tienda_options_str  += '<option value="Salave 1 AQP MS">Salave 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Salguero 5 SC MS">Salguero 5 SC MS</option>';
+            tienda_options_str  += '<option value="Salvad 18 VES MS">Salvad 18 VES MS</option>';
+            tienda_options_str  += '<option value="Samoa320 LM MS">Samoa320 LM MS</option>';
+            tienda_options_str  += '<option value="San Bartolo MS">San Bartolo MS</option>';
+            tienda_options_str  += '<option value="San Juan 4 SL MS">San Juan 4 SL MS</option>';
+            tienda_options_str  += '<option value="SanDiego SMP MS">SanDiego SMP MS</option>';
+            tienda_options_str  += '<option value="SanJose 5 BE MS">SanJose 5 BE MS</option>';
+            tienda_options_str  += '<option value="SanJuan 10 SL MS">SanJuan 10 SL MS</option>';
+            tienda_options_str  += '<option value="SanJuan 9 SJM MS">SanJuan 9 SJM MS</option>';
+            tienda_options_str  += '<option value="SanJuan VES MS">SanJuan VES MS</option>';
+            tienda_options_str  += '<option value="SanLuis 20 SB MS">SanLuis 20 SB MS</option>';
+            tienda_options_str  += '<option value="SanLuis 9 SL MS">SanLuis 9 SL MS</option>';
+            tienda_options_str  += '<option value="SanLuisC6 SB MS">SanLuisC6 SB MS</option>';
+            tienda_options_str  += '<option value="SanPedro 2 CLL MS">SanPedro 2 CLL MS</option>';
+            tienda_options_str  += '<option value="SanjuanB 13 PP MS">SanjuanB 13 PP MS</option>';
+            tienda_options_str  += '<option value="Sanluis31 SB MS">Sanluis31 SB MS</option>';
+            tienda_options_str  += '<option value="SantaA33 SA MS">SantaA33 SA MS</option>';
+            tienda_options_str  += '<option value="SantaG 7 LO MS">SantaG 7 LO MS</option>';
+            tienda_options_str  += '<option value="Santiago47SC MS">Santiago47SC MS</option>';
+            tienda_options_str  += '<option value="Santo 2 CHI MS">Santo 2 CHI MS</option>';
+            tienda_options_str  += '<option value="Santu 18 SJL MS">Santu 18 SJL MS</option>';
+            tienda_options_str  += '<option value="Sarria 12 CE MS">Sarria 12 CE MS</option>';
+            tienda_options_str  += '<option value="Satelite31VE MS">Satelite31VE MS</option>';
+            tienda_options_str  += '<option value="SaucesE16 CH MS">SaucesE16 CH MS</option>';
+            tienda_options_str  += '<option value="Seoane11 TRU MS">Seoane11 TRU MS</option>';
+            tienda_options_str  += '<option value="Separad 3 VES MS">Separad 3 VES MS</option>';
+            tienda_options_str  += '<option value="Septi G2 LO MS">Septi G2 LO MS</option>';
+            tienda_options_str  += '<option value="SevillaD 7 VES MS">SevillaD 7 VES MS</option>';
+            tienda_options_str  += '<option value="Shangrilla PP MS">Shangrilla PP MS</option>';
+            tienda_options_str  += '<option value="Silencio PH MS">Silencio PH MS</option>';
+            tienda_options_str  += '<option value="Socabay 4 AQP MS">Socabay 4 AQP MS</option>';
+            tienda_options_str  += '<option value="Sol7 RI MS">Sol7 RI MS</option>';
+            tienda_options_str  += '<option value="SolDeOro 21 LO MS">SolDeOro 21 LO MS</option>';
+            tienda_options_str  += '<option value="SolDeOro 75 LO MS">SolDeOro 75 LO MS</option>';
+            tienda_options_str  += '<option value="StaElvira LO MS">StaElvira LO MS</option>';
+            tienda_options_str  += '<option value="Sucre 11 PL MS">Sucre 11 PL MS</option>';
+            tienda_options_str  += '<option value="Sucre 13 PL MS">Sucre 13 PL MS</option>';
+            tienda_options_str  += '<option value="Sucre 906 PL MS">Sucre 906 PL MS</option>';
+            tienda_options_str  += '<option value="Sunset 1 PH MS">Sunset 1 PH MS</option>';
+            tienda_options_str  += '<option value="Surco 7 SC MS">Surco 7 SC MS</option>';
+            tienda_options_str  += '<option value="SurcoViejoSC MS">SurcoViejoSC MS</option>';
+            tienda_options_str  += '<option value="TUPAC 64 CO MS">TUPAC 64 CO MS</option>';
+            tienda_options_str  += '<option value="Tacna 2 IC MS">Tacna 2 IC MS</option>';
+            tienda_options_str  += '<option value="Tacna 3 NA MS">Tacna 3 NA MS</option>';
+            tienda_options_str  += '<option value="Tacna 3 PIU MS">Tacna 3 PIU MS</option>';
+            tienda_options_str  += '<option value="Tacna 4 CE MS">Tacna 4 CE MS</option>';
+            tienda_options_str  += '<option value="Tacna 9 MA MS">Tacna 9 MA MS</option>';
+            tienda_options_str  += '<option value="Tadeo23 PP MS">Tadeo23 PP MS</option>';
+            tienda_options_str  += '<option value="Talara 12 VES MS">Talara 12 VES MS</option>';
+            tienda_options_str  += '<option value="Talara 4 JM MS">Talara 4 JM MS</option>';
+            tienda_options_str  += '<option value="Tambo B13 PP MS">Tambo B13 PP MS</option>';
+            tienda_options_str  += '<option value="Tambo D25 CI MS">Tambo D25 CI MS</option>';
+            tienda_options_str  += '<option value="Tejada 2 BA MS">Tejada 2 BA MS</option>';
+            tienda_options_str  += '<option value="Tello 2 CDL MS">Tello 2 CDL MS</option>';
+            tienda_options_str  += '<option value="Teodoro 3 CE MS">Teodoro 3 CE MS</option>';
+            tienda_options_str  += '<option value="Teran2 CLL MS">Teran2 CLL MS</option>';
+            tienda_options_str  += '<option value="Terreros 2 CE MS">Terreros 2 CE MS</option>';
+            tienda_options_str  += '<option value="Tipac 1 LU MS">Tipac 1 LU MS</option>';
+            tienda_options_str  += '<option value="Tizon 5 JM MS">Tizon 5 JM MS</option>';
+            tienda_options_str  += '<option value="Tomasal 1 SC MS">Tomasal 1 SC MS</option>';
+            tienda_options_str  += '<option value="Torres 2 SJM MS">Torres 2 SJM MS</option>';
+            tienda_options_str  += '<option value="Torres 3 SJM MS">Torres 3 SJM MS</option>';
+            tienda_options_str  += '<option value="Trapi A2 CO MS">Trapi A2 CO MS</option>';
+            tienda_options_str  += '<option value="Trapi L2 CB MS">Trapi L2 CB MS</option>';
+            tienda_options_str  += '<option value="Tristan 2 LM MS">Tristan 2 LM MS</option>';
+            tienda_options_str  += '<option value="Tristan 6 LM MS">Tristan 6 LM MS</option>';
+            tienda_options_str  += '<option value="Triu C21 SJM MS">Triu C21 SJM MS</option>';
+            tienda_options_str  += '<option value="Triunfo VMT MS">Triunfo VMT MS</option>';
+            tienda_options_str  += '<option value="TriunfoB3AQP MS">TriunfoB3AQP MS</option>';
+            tienda_options_str  += '<option value="Trujillo 4 MA MS">Trujillo 4 MA MS</option>';
+            tienda_options_str  += '<option value="Tupac 1 CO MS">Tupac 1 CO MS</option>';
+            tienda_options_str  += '<option value="Tupac 16 CB MS">Tupac 16 CB MS</option>';
+            tienda_options_str  += '<option value="Tupac 31 CB MS">Tupac 31 CB MS</option>';
+            tienda_options_str  += '<option value="Tupac 6 TRU MS">Tupac 6 TRU MS</option>';
+            tienda_options_str  += '<option value="Tupac29 CO MS">Tupac29 CO MS</option>';
+            tienda_options_str  += '<option value="Tupac3 HUAC MS">Tupac3 HUAC MS</option>';
+            tienda_options_str  += '<option value="Tupac4 BE MS">Tupac4 BE MS</option>';
+            tienda_options_str  += '<option value="TupacA 10 CO MS">TupacA 10 CO MS</option>';
+            tienda_options_str  += '<option value="Tusilagos 3 SJL MS">Tusilagos 3 SJL MS</option>';
+            tienda_options_str  += '<option value="UCEDAA9 TRU MS">UCEDAA9 TRU MS</option>';
+            tienda_options_str  += '<option value="Ugarte 5 AQP MS">Ugarte 5 AQP MS</option>';
+            tienda_options_str  += '<option value="Ugarte B13 CO MS">Ugarte B13 CO MS</option>';
+            tienda_options_str  += '<option value="Ugarte B28 VE MS">Ugarte B28 VE MS</option>';
+            tienda_options_str  += '<option value="Umachiri 1 AQP MS">Umachiri 1 AQP MS</option>';
+            tienda_options_str  += '<option value="Umamac17 SJM MS ">Umamac17 SJM MS </option>';
+            tienda_options_str  += '<option value="Unanue 2 SV MS">Unanue 2 SV MS</option>';
+            tienda_options_str  += '<option value="Unanue 5 TRU MS">Unanue 5 TRU MS</option>';
+            tienda_options_str  += '<option value="Unger 33 IN MS">Unger 33 IN MS</option>';
+            tienda_options_str  += '<option value="Ungers 65 CO MS">Ungers 65 CO MS</option>';
+            tienda_options_str  += '<option value="Union 1 VMT MS">Union 1 VMT MS</option>';
+            tienda_options_str  += '<option value="Union 2 AT MS">Union 2 AT MS</option>';
+            tienda_options_str  += '<option value="Union17 SANT MS">Union17 SANT MS</option>';
+            tienda_options_str  += '<option value="Union23 SANT MS">Union23 SANT MS</option>';
+            tienda_options_str  += '<option value="Union7A CHS MS">Union7A CHS MS</option>';
+            tienda_options_str  += '<option value="Univer 10 CO MS">Univer 10 CO MS</option>';
+            tienda_options_str  += '<option value="Univer 20 SM MS">Univer 20 SM MS</option>';
+            tienda_options_str  += '<option value="Univer 6 SM MS">Univer 6 SM MS</option>';
+            tienda_options_str  += '<option value="Univer 65 LO MS">Univer 65 LO MS</option>';
+            tienda_options_str  += '<option value="Univer 7 SMP MS">Univer 7 SMP MS</option>';
+            tienda_options_str  += '<option value="Univer7 SM MS">Univer7 SM MS</option>';
+            tienda_options_str  += '<option value="Unsa A8 AQP MS">Unsa A8 AQP MS</option>';
+            tienda_options_str  += '<option value="V Alegre SC MS">V Alegre SC MS</option>';
+            tienda_options_str  += '<option value="VMachuca SJM MS">VMachuca SJM MS</option>';
+            tienda_options_str  += '<option value="VMaria VMT MS">VMaria VMT MS</option>';
+            tienda_options_str  += '<option value="Valdivia7 AQP MS">Valdivia7 AQP MS</option>';
+            tienda_options_str  += '<option value="Valle C57 TRU MS">Valle C57 TRU MS</option>';
+            tienda_options_str  += '<option value="ValleE3 TRU MS">ValleE3 TRU MS</option>';
+            tienda_options_str  += '<option value="Vallejo 15 LI MS">Vallejo 15 LI MS</option>';
+            tienda_options_str  += '<option value="Vallejo 4 TRU MS">Vallejo 4 TRU MS</option>';
+            tienda_options_str  += '<option value="Vallejo10 TRU MS ">Vallejo10 TRU MS </option>';
+            tienda_options_str  += '<option value="Vargas 1 SJM MS">Vargas 1 SJM MS</option>';
+            tienda_options_str  += '<option value="Velarde 1 SC MS">Velarde 1 SC MS</option>';
+            tienda_options_str  += '<option value="Velarde 28 SMP MS">Velarde 28 SMP MS</option>';
+            tienda_options_str  += '<option value="Venezu 50 SM MS">Venezu 50 SM MS</option>';
+            tienda_options_str  += '<option value="Ventanilla MS">Ventanilla MS</option>';
+            tienda_options_str  += '<option value="Venus 3 VTA MS">Venus 3 VTA MS</option>';
+            tienda_options_str  += '<option value="VerdeB2 AQP MS">VerdeB2 AQP MS</option>';
+            tienda_options_str  += '<option value="VidaUA 15 AQP MS">VidaUA 15 AQP MS</option>';
+            tienda_options_str  += '<option value="Vidal 4 SUP MS">Vidal 4 SUP MS</option>';
+            tienda_options_str  += '<option value="Vidal 6 SUP MS">Vidal 6 SUP MS</option>';
+            tienda_options_str  += '<option value="Vidau A3 AQP MS">Vidau A3 AQP MS</option>';
+            tienda_options_str  += '<option value="Vidreria VES MS">Vidreria VES MS</option>';
+            tienda_options_str  += '<option value="Villa 4 VMT MS">Villa 4 VMT MS</option>';
+            tienda_options_str  += '<option value="Villa D22 AQP MS">Villa D22 AQP MS</option>';
+            tienda_options_str  += '<option value="Villa F9? AQP MS">Villa F9? AQP MS</option>';
+            tienda_options_str  += '<option value="Villa3 SMP MS">Villa3 SMP MS</option>';
+            tienda_options_str  += '<option value="VillaG2 AQP MS">VillaG2 AQP MS</option>';
+            tienda_options_str  += '<option value="VillaK29 AQP MS">VillaK29 AQP MS</option>';
+            tienda_options_str  += '<option value="VillaSur VES MS">VillaSur VES MS</option>';
+            tienda_options_str  += '<option value="VillaT 5 LO MS">VillaT 5 LO MS</option>';
+            tienda_options_str  += '<option value="Villamar6 CLL MS">Villamar6 CLL MS</option>';
+            tienda_options_str  += '<option value="Villaran 7 SU MS">Villaran 7 SU MS</option>';
+            tienda_options_str  += '<option value="Villasol LO MS">Villasol LO MS</option>';
+            tienda_options_str  += '<option value="Vipol SMP MS">Vipol SMP MS</option>';
+            tienda_options_str  += '<option value="VirreyI12 SA MS">VirreyI12 SA MS</option>';
+            tienda_options_str  += '<option value="Virreyes 2 SA MS">Virreyes 2 SA MS</option>';
+            tienda_options_str  += '<option value="Wichan 30 TRU MS">Wichan 30 TRU MS</option>';
+            tienda_options_str  += '<option value="Wiesse N7 SJL MS">Wiesse N7 SJL MS</option>';
+            tienda_options_str  += '<option value="Wiessee16SJL MS">Wiessee16SJL MS</option>';
+            tienda_options_str  += '<option value="Yupanqui 5 IN MS">Yupanqui 5 IN MS</option>';
+            tienda_options_str  += '<option value="Zafiros 2 TRU MS">Zafiros 2 TRU MS</option>';
+            tienda_options_str  += '<option value="Zamaco 2 AQP MS">Zamaco 2 AQP MS</option>';
+            tienda_options_str  += '<option value="Zarumilla 8 SMP MS">Zarumilla 8 SMP MS</option>';
+            tienda_options_str  += '<option value="Zela18 LI MS">Zela18 LI MS</option>';
+            tienda_options_str  += '<option value="Zuniga384CHA MS">Zuniga384CHA MS</option>';
+            sel_tienda.innerHTML = tienda_options_str;
+            div_tienda.appendChild(sel_tienda);
+            var lab_tienda = document.createElement('div');
+            lab_tienda.innerHTML = 'tienda';
+            lab_tienda.className = 'filterlabel';
+            div_tienda.appendChild(lab_tienda);
+            var reset_tienda = document.createElement('div');
+            reset_tienda.innerHTML = 'clear filter';
+            reset_tienda.className = 'filterlabel';
+            reset_tienda.onclick = function() {
+                var options = document.getElementById("sel_tienda").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_tienda.appendChild(reset_tienda);
+        resetLabels([layer_TA27octubreta_jm__ta_ampliados_1,layer_Tiendas_Mass_2,layer_Locales_Oct27_3]);
+        map.on("zoomend", function(){
+            resetLabels([layer_TA27octubreta_jm__ta_ampliados_1,layer_Tiendas_Mass_2,layer_Locales_Oct27_3]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_TA27octubreta_jm__ta_ampliados_1,layer_Tiendas_Mass_2,layer_Locales_Oct27_3]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_TA27octubreta_jm__ta_ampliados_1,layer_Tiendas_Mass_2,layer_Locales_Oct27_3]);
+        });
+        </script>
+    </body>
+</html>
